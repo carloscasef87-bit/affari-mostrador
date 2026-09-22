@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Punto de venta — prototipo">
+<title>Mostrador Affari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#FFFFFF; --surface:#FFFFFF; --surface-2:#F5F5F3; --surface-3:#EDEDEA;
+  --ink:#0A0A0A; --ink-2:#5A5A58; --ink-3:#8C8C89;
+  --line:#E3E3E0; --line-2:#C9C9C5;
+  --brand:#0A0A0A; --on-brand:#FFFFFF;
+  --ok:#1C6B43; --ok-soft:#E6F0EA; --ok-line:#B6D4C4;
+  --warn:#845200; --warn-soft:#F6EEDF; --warn-line:#DCC79B;
+  --stop:#9C2A1E; --stop-soft:#F6E7E4; --stop-line:#DDB8B1;
+  --logo-filter:none;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A0A0A; --surface:#121211; --surface-2:#1A1A18; --surface-3:#232320;
+    --ink:#F3F3F0; --ink-2:#A6A6A2; --ink-3:#787875;
+    --line:#262624; --line-2:#3B3B38;
+    --brand:#F3F3F0; --on-brand:#0A0A0A;
+    --ok:#66C294; --ok-soft:#11241A; --ok-line:#2A4636;
+    --warn:#DFA855; --warn-soft:#241C0E; --warn-line:#47381D;
+    --stop:#E08373; --stop-soft:#251411; --stop-line:#4A2721;
+    --logo-filter:invert(1);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A0A0A; --surface:#121211; --surface-2:#1A1A18; --surface-3:#232320;
+  --ink:#F3F3F0; --ink-2:#A6A6A2; --ink-3:#787875;
+  --line:#262624; --line-2:#3B3B38;
+  --brand:#F3F3F0; --on-brand:#0A0A0A;
+  --ok:#66C294; --ok-soft:#11241A; --ok-line:#2A4636;
+  --warn:#DFA855; --warn-soft:#241C0E; --warn-line:#47381D;
+  --stop:#E08373; --stop-soft:#251411; --stop-line:#4A2721;
+  --logo-filter:invert(1);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;text-wrap:balance}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ground);border-bottom:1px solid var(--ink)}
+.topin{max-width:1200px;margin:0 auto;padding:16px 24px 14px;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.logo{height:26px;width:auto;display:block;filter:var(--logo-filter)}
+.brandbox{display:flex;align-items:flex-end;gap:14px;margin-right:auto;min-width:0}
+.brandbox .sub{font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);padding-bottom:3px;border-left:1px solid var(--line-2);padding-left:14px}
+.chip{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:5px 10px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+.chip.solid{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+
+.wrap{max-width:1200px;margin:0 auto;padding:24px;padding-block:26px 48px}
+.grid{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);gap:24px}}
+
+.col-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:9px;border-bottom:1px solid var(--ink);margin-bottom:16px}
+.col-h h2{font-family:"Archivo Black",Archivo,sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.form{display:flex;flex-direction:column;gap:14px}
+label.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+label.f>span{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+select,input[type=number]{font:500 15px/1.2 "IBM Plex Sans",sans-serif;color:var(--ink);background:var(--surface-2);border:1px solid var(--line-2);border-radius:0;padding:11px 12px;width:100%;appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 78px;gap:12px}
+@media (max-width:420px){.row3{grid-template-columns:1fr 1fr}}
+.tallabox{border:1px solid var(--line-2);padding:13px;display:flex;flex-direction:column;gap:11px;background:var(--surface-2)}
+.tallabox .cap{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.tallabox .cap b{font:700 10.5px/1 "IBM Plex Sans";letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.tallabox .cap i{font:600 11px/1 "IBM Plex Mono";font-style:normal;letter-spacing:.04em;color:var(--ink-2)}
+.ficha{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink-2)}
+.ficha b{color:var(--ink);font-weight:600}
+
+.verdict{border:1px solid var(--ink);padding:18px 19px;display:flex;flex-direction:column;gap:7px}
+.verdict .kicker{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.verdict h3{font-family:"Archivo Black",Archivo,sans-serif;font-size:21px;line-height:1.15;letter-spacing:-.01em}
+.verdict p{margin:0;font-size:14px;color:var(--ink-2);max-width:62ch}
+.v-ok{background:var(--ok-soft);border-color:var(--ok-line)} .v-ok .kicker,.v-ok h3{color:var(--ok)}
+.v-warn{background:var(--warn-soft);border-color:var(--warn-line)} .v-warn .kicker,.v-warn h3{color:var(--warn)}
+.v-stop{background:var(--stop-soft);border-color:var(--stop-line)} .v-stop .kicker,.v-stop h3{color:var(--stop)}
+
+.opts{display:flex;flex-direction:column;margin-top:18px;border-top:1px solid var(--line)}
+.opt{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:15px 0 15px 14px;border-bottom:1px solid var(--line);border-left:3px solid transparent}
+.opt.pri{border-left-color:var(--ok)} .opt.sec{border-left-color:var(--warn)} .opt.ter{border-left-color:var(--stop)}
+.opt.gho{border-left-color:var(--line-2)}
+.opt .m{font-size:15.5px;font-weight:600;margin-top:4px}
+.opt .d{font-size:13px;color:var(--ink-2);margin-top:4px;max-width:56ch}
+@media (max-width:540px){.opt{grid-template-columns:1fr;gap:11px}.opt button{justify-self:start}}
+
+button.go{font:700 12px/1 "IBM Plex Sans",sans-serif;letter-spacing:.09em;text-transform:uppercase;padding:12px 16px;border:1px solid var(--brand);background:var(--brand);color:var(--on-brand);cursor:pointer;white-space:nowrap}
+button.go.quiet{background:transparent;color:var(--ink-2);border-color:var(--line-2)}
+button.go:hover{opacity:.84} button.go:active{transform:translateY(1px)}
+
+.flag{display:block;font-size:12.5px;line-height:1.45;padding:9px 11px;margin-top:9px;border-left:2px solid var(--warn);background:var(--warn-soft);color:var(--warn);max-width:58ch}
+.flag.info{border-left-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.flag b{font-weight:700}
+.swatches{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sw{font:500 11.5px/1 "IBM Plex Mono",monospace;padding:6px 9px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.sw:hover{border-color:var(--ink);color:var(--ink)}
+
+.sectitle{display:flex;align-items:baseline;gap:14px;margin:44px 0 14px;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-bottom:9px}
+.sectitle h2{font-family:"Archivo Black",Archivo,sans-serif;font-size:14px;letter-spacing:.09em;text-transform:uppercase}
+.sectitle span{font-size:12.5px;color:var(--ink-3);margin-right:auto}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+@media (max-width:620px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.st{padding:15px 16px;border-right:1px solid var(--line)}
+.st:last-child{border-right:none}
+@media (max-width:620px){.st:nth-child(2){border-right:none}.st:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+.st .n{font-family:"Archivo Black",Archivo,sans-serif;font-size:25px;font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:-.02em}
+.st .l{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin-top:5px}
+.st.a .n{color:var(--ok)} .st.b .n{color:var(--warn)} .st.c .n{color:var(--stop)} .st.d .n{color:var(--ink-2)}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-top:none}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:13px}
+th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{text-align:right;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.tag{font:700 10px/1 "IBM Plex Sans";letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;white-space:nowrap;display:inline-block;border:1px solid}
+.tag.a{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+.tag.b{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)}
+.tag.c{background:var(--stop-soft);color:var(--stop);border-color:var(--stop-line)}
+.tag.d{background:var(--surface-2);color:var(--ink-3);border-color:var(--line-2)}
+.ej{font:600 9.5px/1 "IBM Plex Sans";letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);border:1px dashed var(--line-2);padding:3px 5px;margin-left:7px}
+
+.flujo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+@media (max-width:760px){.flujo{grid-template-columns:minmax(0,1fr)}}
+.etapa{border-right:1px solid var(--line);padding:16px}
+.etapa:last-child{border-right:none}
+@media (max-width:760px){.etapa{border-right:none;border-bottom:1px solid var(--line)}.etapa:last-child{border-bottom:none}}
+.etapa>.eyebrow{display:block;margin-bottom:3px}
+.etapa .dest{font-size:12px;color:var(--ink-3);margin-bottom:12px}
+.orden{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}
+.orden:first-of-type{border-top:none;margin-top:0;padding-top:0}
+.orden .nm{font-size:14px;font-weight:600}
+.orden .mt{font-size:12px;color:var(--ink-2);margin-top:3px}
+.orden .pz{font:500 11.5px/1 "IBM Plex Mono";color:var(--ink-3);margin-top:5px}
+
+.demanda{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;border:1px solid var(--line);padding:16px}
+.dm{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dm .bar{width:100%;background:var(--surface-3);display:flex;align-items:flex-end;height:54px}
+.dm .fill{width:100%;background:var(--line-2)}
+.dm.on .fill{background:var(--brand)}
+.dm .lb{font:600 11px/1 "IBM Plex Mono",monospace;color:var(--ink-3)}
+.dm.on .lb{color:var(--ink)}
+
+footer.note{max-width:1200px;margin:0 auto;padding:36px 24px 10px;border-top:1px solid var(--ink);font-size:12.5px;color:var(--ink-3);line-height:1.65}
+footer.note p{margin:0 0 10px;max-width:92ch}
+footer.note b{color:var(--ink-2);font-weight:600}
+
+/* ── pestañas ── */
+.tabs{display:flex;gap:2px;align-self:flex-end}
+.tab{font:700 11px/1 "IBM Plex Sans",sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;border:1px solid var(--line-2);border-bottom:none;background:var(--surface-2);color:var(--ink-3);cursor:pointer;margin-bottom:-15px;position:relative}
+.tab.on{background:var(--ground);color:var(--ink);border-color:var(--ink);border-bottom:1px solid var(--ground)}
+.tab:hover{color:var(--ink)}
+
+/* ── presentación ── */
+.pres{max-width:1200px;margin:0 auto;padding:24px;padding-block:34px 56px}
+.lede{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;align-items:start;padding-bottom:34px;border-bottom:1px solid var(--ink)}
+@media (max-width:860px){.lede{grid-template-columns:minmax(0,1fr);gap:26px}}
+.lede h1{font-family:"Archivo Black",Archivo,sans-serif;font-size:clamp(28px,4.4vw,44px);line-height:1.04;letter-spacing:-.025em}
+.lede .dek{font-size:16px;line-height:1.55;color:var(--ink-2);margin-top:16px;max-width:54ch}
+.cifras{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.cifra{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line)}
+.cifra b{font-family:"Archivo Black",Archivo,sans-serif;font-size:23px;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;min-width:82px}
+.cifra span{font-size:13px;color:var(--ink-2);line-height:1.4}
+
+.h2p{font-family:"Archivo Black",Archivo,sans-serif;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding-bottom:9px;border-bottom:1px solid var(--ink);margin:48px 0 20px}
+.h2p span{font-family:"IBM Plex Sans";font-weight:400;font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--ink-3);margin-left:12px}
+
+.pasos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+@media (max-width:880px){.pasos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.pasos{grid-template-columns:minmax(0,1fr)}}
+.paso{padding:18px;border-right:1px solid var(--line)}
+.paso:last-child{border-right:none}
+@media (max-width:880px){.paso:nth-child(2n){border-right:none}.paso:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:480px){.paso{border-right:none;border-bottom:1px solid var(--line)}.paso:last-child{border-bottom:none}}
+.paso .nu{font-family:"Archivo Black";font-size:12px;letter-spacing:.06em;color:var(--ink-3);display:block;margin-bottom:9px}
+.paso h3{font-size:15.5px;font-weight:700;margin-bottom:7px}
+.paso p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.5}
+
+.antes{width:100%;border-collapse:collapse;font-size:13.5px}
+.antes th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:10px 14px;border-bottom:1px solid var(--ink);background:transparent}
+.antes td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+.antes td:first-child{font-weight:600;white-space:nowrap}
+.antes td.hoy{color:var(--ink-2)}
+.antes td.luego{color:var(--ink)}
+.antes tr:last-child td{border-bottom:none}
+
+.dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+@media (max-width:760px){.dos{grid-template-columns:minmax(0,1fr)}}
+.caja{padding:20px;border-right:1px solid var(--line)}
+.caja:last-child{border-right:none}
+@media (max-width:760px){.caja{border-right:none;border-bottom:1px solid var(--line)}.caja:last-child{border-bottom:none}}
+.caja h3{font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
+.caja.si h3{color:var(--ok)} .caja.no h3{color:var(--ink-3)}
+.caja ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.caja li{font-size:13.5px;line-height:1.45;padding-left:20px;position:relative;color:var(--ink-2)}
+.caja.si li{color:var(--ink)}
+.caja li::before{position:absolute;left:0;top:0;font-family:"IBM Plex Mono";font-size:13px}
+.caja.si li::before{content:"+";color:var(--ok);font-weight:600}
+.caja.no li::before{content:"–";color:var(--ink-3)}
+.caja .pie{font-size:12.5px;color:var(--ink-3);margin-top:16px;padding-top:14px;border-top:1px solid var(--line);line-height:1.5}
+
+.semanas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+@media (max-width:880px){.semanas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.semanas{grid-template-columns:minmax(0,1fr)}}
+.sem{padding:18px;border-right:1px solid var(--line)}
+.sem:last-child{border-right:none}
+@media (max-width:880px){.sem:nth-child(2n){border-right:none}.sem:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:480px){.sem{border-right:none;border-bottom:1px solid var(--line)}.sem:last-child{border-bottom:none}}
+.sem .w{display:block;font:700 10.5px/1 "IBM Plex Sans";letter-spacing:.12em;text-transform:uppercase;color:var(--on-brand);background:var(--brand);padding:5px 8px;margin-bottom:12px;align-self:flex-start;width:fit-content}
+.sem h3{font-size:15px;font-weight:700;margin-bottom:7px}
+.sem p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.sem .hito{font-size:12px;color:var(--ok);font-weight:600;margin-top:10px;display:block}
+
+.cotiza{border:1px solid var(--ink)}
+.cot-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;padding:17px 20px;border-bottom:1px solid var(--line);align-items:baseline}
+.cot-row .q{font-size:15px;font-weight:600}
+.cot-row .qd{font-size:12.5px;color:var(--ink-2);margin-top:4px;max-width:62ch;line-height:1.5}
+.cot-row .v{font-family:"Archivo Black",Archivo,sans-serif;font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.02em}
+.cot-row.total{background:var(--surface-2);border-bottom:none}
+.cot-row.total .q{font-family:"Archivo Black";font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.cot-row.total .v{font-size:27px}
+.cot-row.mes .v{font-size:17px;color:var(--ink-2)}
+.cot-pie{padding:16px 20px;border-top:1px solid var(--ink);font-size:12.5px;color:var(--ink-3);line-height:1.6}
+.cot-pie b{color:var(--ink-2);font-weight:600}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<style>
+:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{margin:0}
+body{font:14px/1.45 system-ui,-apple-system,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="topin">
+    <div class="brandbox">
+      <img class="logo" src="data:image/png;base64,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" alt="Affari" width="198" height="62">
+      <span class="sub">Punto de venta</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab on" data-t="mostrador" id="tabM">Mostrador</button>
+      <button class="tab" data-t="presentacion" id="tabP">Presentación</button>
+    </nav>
+    <span class="chip solid" id="chipStock">609 piezas</span>
+    <span class="chip" id="chipFecha">Conteo del 14·sep·2026</span>
+  </div>
+</header>
+
+<section id="pane-mostrador">
+<div class="wrap">
+  <div class="grid">
+
+    <section>
+      <div class="col-h"><h2>El pedido</h2><span class="eyebrow">Captura</span></div>
+      <div class="form">
+        <label class="f"><span>Cliente</span>
+          <select id="cliente">
+            <option value="1">Mostrador · WhatsApp · Instagram</option>
+            <option value="sc">Santa Carmen — lista propia</option>
+            <option value="of">Ortofacial Center — lista propia</option>
+          </select>
+        </label>
+        <div class="row2">
+          <label class="f"><span>Línea</span><select id="linea"></select></label>
+          <label class="f"><span>Modelo</span><select id="modelo"></select></label>
+        </div>
+        <label class="f"><span>Color</span><select id="color"></select></label>
+
+        <div class="tallabox">
+          <div class="cap"><b>Tallas del paquete</b><i id="mixLabel">tallas iguales</i></div>
+          <div class="row3">
+            <label class="f"><span>Filipina</span><select id="tf"></select></label>
+            <label class="f"><span>Pantalón</span><select id="tp"></select></label>
+            <label class="f"><span>Pzas</span><input type="number" id="qty" min="1" max="60" value="1"></label>
+          </div>
+        </div>
+
+        <div class="ficha">
+          <div>SKU del paquete <b class="mono" id="skuOut">—</b></div>
+          <div id="precioOut">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="col-h"><h2>Qué se puede hacer</h2><span class="eyebrow" id="regla">Regla del escalón</span></div>
+      <div id="veredicto"></div>
+      <div class="opts" id="opciones"></div>
+    </section>
+  </div>
+
+  <div class="sectitle">
+    <h2>El mostrador hoy</h2>
+    <span>cada decisión queda registrada — incluida la venta que no se cerró</span>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Hora</th><th>SKU</th><th>Producto</th><th>Tallas</th>
+        <th style="text-align:right">Pzas</th><th>Desenlace</th><th style="text-align:right">Importe</th>
+      </tr></thead>
+      <tbody id="bitacora"></tbody>
+    </table>
+  </div>
+
+  <div class="sectitle">
+    <h2>Lo que viene en camino</h2>
+    <span>el cortador surte a los dos: al taller lo que es pedido, a la maquila lo que es stock</span>
+  </div>
+  <div class="flujo" id="flujo"></div>
+
+  <div class="sectitle">
+    <h2>Qué tanto sale cada talla</h2>
+    <span>renglones vendidos en agosto y septiembre de 2026</span>
+  </div>
+  <div class="demanda" id="demanda"></div>
+</div>
+
+<footer class="note">
+  <p><b>Prototipo.</b> El inventario, los modelos, los colores y los precios salen de los archivos de Affari: el conteo físico del 14 de septiembre de 2026 —108 combinaciones de modelo y color, 609 piezas— y la lista de precios de la hoja <span class="mono">Data</span>. Los SKU son una propuesta: hoy el catálogo no tiene. Las órdenes de «lo que viene en camino» son un ejemplo para mostrar cómo se vería; todavía no hay de dónde sacarlas.</p>
+  <p><b>Reglas aplicadas.</b> El paquete es la unidad: filipina y pantalón del mismo tendido, por eso no se mezclan piezas de paquetes distintos. Solo se baja <b>una talla a la vez</b> y nunca se sube. En tallas mixtas se abre el paquete de la talla mayor. Si no hay, se abre uno de la talla de arriba y se ajustan las dos prendas. El ajuste lo hace el <b>taller de confección</b>, el mismo que saca los pedidos. Si nada de eso alcanza, va a <b>corte</b> y de ahí al taller: de 15 a 20 días hábiles. El almacén solo se repone con lo que entrega la <b>maquila</b>.</p>
+</footer>
+</section>
+<section id="pane-presentacion" hidden>
+<div class="pres">
+
+  <div class="lede">
+    <div>
+      <h1>Que la venta y el almacén sean la misma cosa.</h1>
+      <p class="dek">Hoy Affari vende bien: agosto cerró en <b>$119,789</b> y septiembre va en ritmo parecido. El problema no es vender — es que la venta se anota en un lado y el almacén se cuenta en otro, y cuadrar los dos se lleva a cuatro personas cada semana. Este módulo junta las dos cosas en un solo movimiento: se captura la venta, y el inventario ya bajó.</p>
+    </div>
+    <div class="cifras">
+      <div class="cifra"><b>609</b><span>piezas contadas a mano cada semana, entre Orlando, Kass, Fer y la vendedora del local</span></div>
+      <div class="cifra"><b>49%</b><span>de la venta de agosto y septiembre entró por WhatsApp e Instagram, pero en la hoja aparece bajo un nombre de persona, no como canal</span></div>
+      <div class="cifra"><b>11</b><span>formas distintas de escribir una talla mixta en la misma columna</span></div>
+      <div class="cifra"><b>0</b><span>ventas perdidas registradas: cuando alguien pide algo que no hay y se va, no queda rastro</span></div>
+    </div>
+  </div>
+
+  <h2 class="h2p">Qué hace el sistema <span>cuatro cosas, y nada más</span></h2>
+  <div class="pasos">
+    <div class="paso"><span class="nu">01</span><h3>Identifica el producto</h3>
+      <p>Cada paquete tiene un SKU: línea, modelo, color y talla. Se elige de una lista, no se escribe. Se acabó que «Freddo Light» y «Freddo Ligth» sean dos productos distintos.</p></div>
+    <div class="paso"><span class="nu">02</span><h3>Resuelve el faltante</h3>
+      <p>Al capturar el pedido dice si sale de almacén, si se abre un paquete de la talla de arriba para ajustarlo, si ya viene en camino, o si hay que mandarlo a cortar. En el momento, sin preguntarle a nadie.</p></div>
+    <div class="paso"><span class="nu">03</span><h3>Cobra al precio correcto</h3>
+      <p>Aplica solo el nivel que toca —unitario, dos uniformes, medio mayoreo, mayoreo— y las listas propias de Santa Carmen y Ortofacial. Ya no se discute un precio.</p></div>
+    <div class="paso"><span class="nu">04</span><h3>Descuenta y deja rastro</h3>
+      <p>El inventario baja en el mismo segundo. Queda registrado quién vendió, por qué canal, qué ajuste pidió el taller y qué venta no se pudo cerrar.</p></div>
+  </div>
+
+  <h2 class="h2p">Cómo cambia el día a día <span>quién hace qué, antes y después</span></h2>
+  <div class="tbl-wrap" style="border-top:1px solid var(--line)">
+  <table class="antes">
+    <thead><tr><th>Quién</th><th>Hoy</th><th>Con el sistema</th></tr></thead>
+    <tbody>
+      <tr><td>Fer<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">WhatsApp e Instagram</span></td>
+        <td class="hoy">Cierra la venta y le pregunta a Kass si hay. Anota el renglón en el Excel cuando puede.</td>
+        <td class="luego">Captura el pedido en el teléfono y el sistema le dice ahí mismo si sale hoy, en dos días o en tres semanas. Promete con dato.</td></tr>
+      <tr><td>Vendedora<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">del local</span></td>
+        <td class="hoy">Cobra y anota. El precio de mayoreo lo busca en una hoja con dos tablas distintas.</td>
+        <td class="luego">Cobra con el precio ya calculado y manda el ticket por WhatsApp. El inventario baja solo.</td></tr>
+      <tr><td>Kass<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">almacén y taller</span></td>
+        <td class="hoy">Es la única que sabe qué hay. Todo pasa por ella, y por eso todo se detiene cuando no está.</td>
+        <td class="luego">Recibe las órdenes de ajuste y de corte en una lista, no en un chat. Deja de ser el cuello de botella.</td></tr>
+      <tr><td>Orlando<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">dirección</span></td>
+        <td class="hoy">Cuenta inventario una vez por semana y lee una columna de diferencias que apunta a una celda vacía.</td>
+        <td class="luego">Abre el reporte: qué se vendió, por qué canal, cuántos ajustes hizo el taller y qué se dejó de vender por no tenerlo.</td></tr>
+      <tr><td>El conteo<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">semanal</span></td>
+        <td class="hoy">Obligatorio. Cuatro personas, 609 piezas, cada semana, porque nadie confía en el número.</td>
+        <td class="luego">Deja de ser obligatorio. Se hace una verificación al mes, y solo sobre lo que el sistema marque descuadrado.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2 class="h2p">Hasta dónde llega este módulo <span>para que quede claro qué se está contratando</span></h2>
+  <div class="dos">
+    <div class="caja si">
+      <h3>Incluye</h3>
+      <ul>
+        <li>Catálogo maestro con SKU: línea, modelo, color y talla, cargado con su inventario actual</li>
+        <li>Pantalla de venta para mostrador, WhatsApp e Instagram, con el vendedor identificado</li>
+        <li>El resolvedor de faltantes con las reglas de Affari: paquete completo, ajuste de una talla, o corte</li>
+        <li>Descuento automático de inventario al cerrar la venta</li>
+        <li>Los cinco niveles de precio y las listas propias de Santa Carmen y Ortofacial</li>
+        <li>Ticket por WhatsApp con el detalle del pedido</li>
+        <li>Órdenes de ajuste y de corte para el taller</li>
+        <li>Registro de ventas perdidas</li>
+        <li>Reporte de cierre diario y semanal</li>
+        <li>Capacitación a las cuatro personas y acompañamiento en piso la primera semana</li>
+      </ul>
+    </div>
+    <div class="caja no">
+      <h3>No incluye en esta fase</h3>
+      <ul>
+        <li>Sincronizar inventario con Shopify en automático</li>
+        <li>Facturación CFDI</li>
+        <li>Control de telas y materia prima</li>
+        <li>Seguimiento de órdenes de corte y entregas de maquila</li>
+        <li>Costos de producción y margen por modelo</li>
+        <li>Contabilidad, nómina o bancos</li>
+        <li>Aplicación para que el cliente final compre</li>
+      </ul>
+      <p class="pie">Nada de esto está descartado: son fases siguientes y se cotizan aparte. Se deja fuera a propósito para que el punto de venta arranque en semanas y no en meses.</p>
+    </div>
+  </div>
+
+  <h2 class="h2p">Cuánto tarda <span>cuatro semanas, usable desde la segunda</span></h2>
+  <div class="semanas">
+    <div class="sem"><span class="w">Semana 1</span><h3>El catálogo</h3>
+      <p>Se le pone SKU a los 108 modelos-color, se ordenan las tallas y se carga el inventario del último conteo. Aquí se decide cuál lista de precios queda vigente.</p></div>
+    <div class="sem"><span class="w">Semana 2</span><h3>El mostrador</h3>
+      <p>La pantalla de venta funcionando con el resolvedor de faltantes y el descuento de inventario. Empieza a usarse en el local en paralelo al Excel.</p>
+      <span class="hito">→ Ya se puede vender con él</span></div>
+    <div class="sem"><span class="w">Semana 3</span><h3>WhatsApp y taller</h3>
+      <p>Tickets por WhatsApp, captura desde el teléfono de Fer, las órdenes de ajuste y de corte llegando a Kass, y los reportes de cierre.</p></div>
+    <div class="sem"><span class="w">Semana 4</span><h3>Acompañamiento</h3>
+      <p>Una semana en piso con las cuatro personas, corrigiendo lo que la operación real saque. Al terminar, se apaga el Excel de pedidos.</p>
+      <span class="hito">→ Entrega</span></div>
+  </div>
+
+  <h2 class="h2p">Inversión <span>pesos mexicanos, sin IVA</span></h2>
+  <div class="cotiza">
+    <div class="cot-row">
+      <div><div class="q">Catálogo maestro con SKU</div>
+        <div class="qd">Los 108 modelos-color con su SKU, tallas normalizadas, precios por nivel y carga del inventario. Es la base de la que cuelga todo lo demás — y queda suya, sirva o no el resto.</div></div>
+      <div class="v">$12,000</div>
+    </div>
+    <div class="cot-row">
+      <div><div class="q">Módulo de punto de venta</div>
+        <div class="qd">Todo lo de la columna «Incluye»: la pantalla de venta, el resolvedor de faltantes, el descuento de inventario, los precios por nivel y cliente, los tickets, las órdenes al taller, los reportes y la capacitación.</div></div>
+      <div class="v">$38,000</div>
+    </div>
+    <div class="cot-row total"><div class="q">Total de implementación</div><div class="v">$50,000</div></div>
+    <div class="cot-row mes">
+      <div><div class="q">Acompañamiento mensual</div>
+        <div class="qd">Desde el segundo mes. Soporte, respaldos diarios, cambios chicos y ajustes a lo que la operación pida. Se puede cancelar cuando quieran.</div></div>
+      <div class="v">$3,500 / mes</div>
+    </div>
+    <div class="cot-pie">
+      <b>Forma de pago:</b> 50% al arrancar y 50% contra entrega, al cerrar la semana 4. &nbsp;·&nbsp;
+      <b>Qué pasa si no funciona:</b> la semana 2 ya se puede vender con él. Si en esa semana el sistema no le sirve a la operación, se detiene ahí y solo se paga el catálogo. &nbsp;·&nbsp;
+      <b>Lo que no entra:</b> el hosting y el número de WhatsApp para el negocio se contratan a nombre de Affari y se pagan aparte — es del orden de $400 a $900 al mes, y así la cuenta siempre es suya.
+    </div>
+  </div>
+
+</div>
+</section>
+
+<script>
+const TALLAS=["XS","S","M","L","XL","2XL","3XL"];
+const DEM={"XS":28,"S":53,"M":62,"L":41,"XL":24,"2XL":3,"3XL":1};
+const CAT=[{"linea":"Light","modelo":"Cierre Acampanado","color":"BEIGE","unit":689,"promo2":650,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CIER-BEI-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"GRIS PERLA","unit":689,"promo2":650,"stock":{"XS":0,"S":4,"M":4,"L":4,"XL":2,"2XL":0,"3XL":0},"sku":"LIG-CIER-GRI-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"MARINO","unit":689,"promo2":650,"stock":{"XS":0,"S":2,"M":5,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CIER-MAR-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"MILITAR","unit":689,"promo2":650,"stock":{"XS":0,"S":2,"M":4,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CIER-MIL-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"NEGRO","unit":689,"promo2":650,"stock":{"XS":0,"S":5,"M":1,"L":3,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CIER-NEG-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"PETROLEO","unit":689,"promo2":650,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CIER-PET-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"ROUGE","unit":689,"promo2":650,"stock":{"XS":0,"S":3,"M":4,"L":2,"XL":1,"2XL":0,"3XL":0},"sku":"LIG-CIER-ROU-@"},{"linea":"Light","modelo":"Cierre Acampanado","color":"VINO","unit":689,"promo2":650,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CIER-VIN-@"},{"linea":"Light","modelo":"Confort","color":"BEIGE","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CONF-BEI-@"},{"linea":"Light","modelo":"Confort","color":"BUGAMBILIA","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":1,"2XL":0,"3XL":0},"sku":"LIG-CONF-BUG-@"},{"linea":"Light","modelo":"Confort","color":"LILA","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-CONF-LIL-@"},{"linea":"Light","modelo":"Confort","color":"MARINO","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":7,"XL":2,"2XL":0,"3XL":0},"sku":"LIG-CONF-MAR-@"},{"linea":"Light","modelo":"Freddo","color":"ACERO","unit":649,"promo2":600,"stock":{"XS":0,"S":8,"M":5,"L":4,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-ACE-@"},{"linea":"Light","modelo":"Freddo","color":"BEIGE","unit":649,"promo2":600,"stock":{"XS":10,"S":8,"M":5,"L":4,"XL":0,"2XL":1,"3XL":0},"sku":"LIG-FRED-BEI-@"},{"linea":"Light","modelo":"Freddo","color":"BLANCO","unit":649,"promo2":600,"stock":{"XS":0,"S":8,"M":8,"L":4,"XL":3,"2XL":0,"3XL":0},"sku":"LIG-FRED-BLA-@"},{"linea":"Light","modelo":"Freddo","color":"BUGAMBILIA","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-BUG-@"},{"linea":"Light","modelo":"Freddo","color":"CIELO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-CIE-@"},{"linea":"Light","modelo":"Freddo","color":"FRANCIA","unit":649,"promo2":600,"stock":{"XS":0,"S":4,"M":0,"L":4,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-FRA-@"},{"linea":"Light","modelo":"Freddo","color":"FUCSIA","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-FUC-@"},{"linea":"Light","modelo":"Freddo","color":"LILA","unit":649,"promo2":600,"stock":{"XS":0,"S":4,"M":0,"L":4,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-LIL-@"},{"linea":"Light","modelo":"Freddo","color":"MARINO","unit":649,"promo2":600,"stock":{"XS":0,"S":1,"M":2,"L":2,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-MAR-@"},{"linea":"Light","modelo":"Freddo","color":"MENTA","unit":649,"promo2":600,"stock":{"XS":0,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-MEN-@"},{"linea":"Light","modelo":"Freddo","color":"MILITAR","unit":649,"promo2":600,"stock":{"XS":2,"S":0,"M":1,"L":0,"XL":2,"2XL":1,"3XL":0},"sku":"LIG-FRED-MIL-@"},{"linea":"Light","modelo":"Freddo","color":"NEGRO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":1,"L":10,"XL":2,"2XL":0,"3XL":0},"sku":"LIG-FRED-NEG-@"},{"linea":"Light","modelo":"Freddo","color":"PERLA","unit":649,"promo2":600,"stock":{"XS":1,"S":4,"M":1,"L":6,"XL":3,"2XL":0,"3XL":0},"sku":"LIG-FRED-PER-@"},{"linea":"Light","modelo":"Freddo","color":"PETROLEO","unit":649,"promo2":600,"stock":{"XS":2,"S":0,"M":6,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-PET-@"},{"linea":"Light","modelo":"Freddo","color":"REY","unit":649,"promo2":600,"stock":{"XS":3,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-REY-@"},{"linea":"Light","modelo":"Freddo","color":"ROJO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-ROJ-@"},{"linea":"Light","modelo":"Freddo","color":"ROSA","unit":649,"promo2":600,"stock":{"XS":0,"S":1,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-ROS-@"},{"linea":"Light","modelo":"Freddo","color":"ROUGE","unit":649,"promo2":600,"stock":{"XS":0,"S":2,"M":6,"L":1,"XL":2,"2XL":0,"3XL":0},"sku":"LIG-FRED-ROU-@"},{"linea":"Light","modelo":"Freddo","color":"TURQUESA","unit":649,"promo2":600,"stock":{"XS":0,"S":2,"M":0,"L":2,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-TUR-@"},{"linea":"Light","modelo":"Freddo","color":"VINO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":2,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-VIN-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"ACERO","unit":689,"promo2":650,"stock":{"XS":0,"S":1,"M":15,"L":2,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-ACE-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"BEIGE","unit":689,"promo2":650,"stock":{"XS":0,"S":2,"M":3,"L":3,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-BEI-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"BLANCO","unit":689,"promo2":650,"stock":{"XS":1,"S":4,"M":7,"L":6,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-BLA-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"CAFÉ","unit":689,"promo2":650,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-CAF-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"LILA","unit":689,"promo2":650,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-LIL-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"MARINO","unit":689,"promo2":650,"stock":{"XS":0,"S":4,"M":10,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-MAR-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"MILITAR","unit":689,"promo2":650,"stock":{"XS":0,"S":8,"M":8,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-MIL-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"NARANJA","unit":689,"promo2":650,"stock":{"XS":1,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-NAR-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"NEGRO","unit":689,"promo2":650,"stock":{"XS":0,"S":16,"M":10,"L":5,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-NEG-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"PERLA","unit":689,"promo2":650,"stock":{"XS":1,"S":5,"M":10,"L":9,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-PER-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"PETROLEO","unit":689,"promo2":650,"stock":{"XS":1,"S":12,"M":7,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-PET-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"ROUGE","unit":689,"promo2":650,"stock":{"XS":1,"S":12,"M":8,"L":5,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-ROU-@"},{"linea":"Light","modelo":"Freddo Acampanado","color":"VINO","unit":689,"promo2":650,"stock":{"XS":1,"S":3,"M":10,"L":9,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-FRED-VIN-@"},{"linea":"Light","modelo":"Porte","color":"ACERO","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-ACE-@"},{"linea":"Light","modelo":"Porte","color":"BEIGE","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":2,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-BEI-@"},{"linea":"Light","modelo":"Porte","color":"BLANCO","unit":739,"promo2":700,"stock":{"XS":0,"S":1,"M":3,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-BLA-@"},{"linea":"Light","modelo":"Porte","color":"FRANCIA","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-FRA-@"},{"linea":"Light","modelo":"Porte","color":"LILA","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-LIL-@"},{"linea":"Light","modelo":"Porte","color":"MARINO","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":9,"XL":7,"2XL":6,"3XL":1},"sku":"LIG-PORT-MAR-@"},{"linea":"Light","modelo":"Porte","color":"MILITAR","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":2,"2XL":0,"3XL":0},"sku":"LIG-PORT-MIL-@"},{"linea":"Light","modelo":"Porte","color":"NEGRO","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":2,"L":1,"XL":0,"2XL":1,"3XL":2},"sku":"LIG-PORT-NEG-@"},{"linea":"Light","modelo":"Porte","color":"PERLA","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":2,"L":6,"XL":3,"2XL":1,"3XL":1},"sku":"LIG-PORT-PER-@"},{"linea":"Light","modelo":"Porte","color":"PETROLEO","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-PET-@"},{"linea":"Light","modelo":"Porte","color":"REY","unit":739,"promo2":700,"stock":{"XS":2,"S":0,"M":1,"L":3,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-REY-@"},{"linea":"Light","modelo":"Porte","color":"ROJO","unit":739,"promo2":700,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-ROJ-@"},{"linea":"Light","modelo":"Porte","color":"ROUGE","unit":739,"promo2":700,"stock":{"XS":0,"S":1,"M":1,"L":2,"XL":2,"2XL":0,"3XL":0},"sku":"LIG-PORT-ROU-@"},{"linea":"Light","modelo":"Porte","color":"VINO","unit":739,"promo2":700,"stock":{"XS":0,"S":4,"M":4,"L":3,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-PORT-VIN-@"},{"linea":"Light","modelo":"Recto","color":"AZUL CIELO","unit":649,"promo2":600,"stock":{"XS":1,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-RECT-AZU-@"},{"linea":"Light","modelo":"Stretto","color":"BEIGE","unit":649,"promo2":600,"stock":{"XS":2,"S":0,"M":0,"L":0,"XL":0,"2XL":1,"3XL":0},"sku":"LIG-STRE-BEI-@"},{"linea":"Light","modelo":"Stretto","color":"BLANCO","unit":649,"promo2":600,"stock":{"XS":1,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-STRE-BLA-@"},{"linea":"Light","modelo":"Stretto","color":"CIELO","unit":649,"promo2":600,"stock":{"XS":1,"S":1,"M":0,"L":1,"XL":3,"2XL":0,"3XL":0},"sku":"LIG-STRE-CIE-@"},{"linea":"Light","modelo":"Stretto","color":"LILA","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":1,"3XL":0},"sku":"LIG-STRE-LIL-@"},{"linea":"Light","modelo":"Stretto","color":"MARINO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":3,"3XL":0},"sku":"LIG-STRE-MAR-@"},{"linea":"Light","modelo":"Stretto","color":"NEGRO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":5,"XL":0,"2XL":2,"3XL":0},"sku":"LIG-STRE-NEG-@"},{"linea":"Light","modelo":"Stretto","color":"PETROLEO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":1,"3XL":0},"sku":"LIG-STRE-PET-@"},{"linea":"Light","modelo":"Stretto","color":"REY","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-STRE-REY-@"},{"linea":"Light","modelo":"Stretto","color":"ROJO","unit":649,"promo2":600,"stock":{"XS":1,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-STRE-ROJ-@"},{"linea":"Light","modelo":"Stretto","color":"ROUGE","unit":649,"promo2":600,"stock":{"XS":0,"S":1,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-STRE-ROU-@"},{"linea":"Light","modelo":"Stretto","color":"VERDE BANDERA","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":1,"3XL":0},"sku":"LIG-STRE-VER-@"},{"linea":"Light","modelo":"Stretto","color":"VINO","unit":649,"promo2":600,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"LIG-STRE-VIN-@"},{"linea":"Premium","modelo":"Cierre","color":"AMARILLO","unit":890,"promo2":800,"stock":{"XS":0,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CIER-AMA-@"},{"linea":"Premium","modelo":"Cierre","color":"AZUL REY","unit":890,"promo2":800,"stock":{"XS":1,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CIER-AZU-@"},{"linea":"Premium","modelo":"Cierre","color":"BEIGE","unit":890,"promo2":800,"stock":{"XS":0,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CIER-BEI-@"},{"linea":"Premium","modelo":"Cierre","color":"BLANCO","unit":890,"promo2":800,"stock":{"XS":0,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CIER-BLA-@"},{"linea":"Premium","modelo":"Cierre","color":"FIUCSA","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CIER-FIU-@"},{"linea":"Premium","modelo":"Confort","color":"ACERO","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CONF-ACE-@"},{"linea":"Premium","modelo":"Confort","color":"CIELO","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CONF-CIE-@"},{"linea":"Premium","modelo":"Confort","color":"MARINO","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-CONF-MAR-@"},{"linea":"Premium","modelo":"Freddo","color":"BLANCO","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-BLA-@"},{"linea":"Premium","modelo":"Freddo","color":"CIELO","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-CIE-@"},{"linea":"Premium","modelo":"Freddo","color":"FRANCIA","unit":890,"promo2":800,"stock":{"XS":2,"S":4,"M":4,"L":4,"XL":2,"2XL":0,"3XL":0},"sku":"PRE-FRED-FRA-@"},{"linea":"Premium","modelo":"Freddo","color":"GRIS CLARO","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-GRI-@"},{"linea":"Premium","modelo":"Freddo","color":"LAGUNA","unit":890,"promo2":800,"stock":{"XS":4,"S":4,"M":4,"L":4,"XL":2,"2XL":0,"3XL":0},"sku":"PRE-FRED-LAG-@"},{"linea":"Premium","modelo":"Freddo","color":"LILA","unit":890,"promo2":800,"stock":{"XS":1,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-LIL-@"},{"linea":"Premium","modelo":"Freddo","color":"MANZANA","unit":890,"promo2":800,"stock":{"XS":1,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-MAN-@"},{"linea":"Premium","modelo":"Freddo","color":"NARANJA","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-NAR-@"},{"linea":"Premium","modelo":"Freddo","color":"OLIVO","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-OLI-@"},{"linea":"Premium","modelo":"Freddo","color":"PERLA","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-PER-@"},{"linea":"Premium","modelo":"Freddo","color":"PIZARRA","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-PIZ-@"},{"linea":"Premium","modelo":"Freddo","color":"REY","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-REY-@"},{"linea":"Premium","modelo":"Freddo","color":"ROUGE","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-ROU-@"},{"linea":"Premium","modelo":"Freddo","color":"TARO","unit":890,"promo2":800,"stock":{"XS":2,"S":4,"M":3,"L":4,"XL":2,"2XL":0,"3XL":0},"sku":"PRE-FRED-TAR-@"},{"linea":"Premium","modelo":"Freddo","color":"TURQUESA","unit":890,"promo2":800,"stock":{"XS":2,"S":4,"M":4,"L":4,"XL":2,"2XL":0,"3XL":0},"sku":"PRE-FRED-TUR-@"},{"linea":"Premium","modelo":"Freddo","color":"VINO","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-FRED-VIN-@"},{"linea":"Premium","modelo":"Giro","color":"NEGRO","unit":980,"promo2":null,"stock":{"XS":0,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-GIRO-NEG-@"},{"linea":"Premium","modelo":"Lusso","color":"NEGRO","unit":1030,"promo2":940,"stock":{"XS":1,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-LUSS-NEG-@"},{"linea":"Premium","modelo":"Porte","color":"BEIGE","unit":980,"promo2":900,"stock":{"XS":0,"S":1,"M":0,"L":1,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-PORT-BEI-@"},{"linea":"Premium","modelo":"Porte","color":"MARINO","unit":980,"promo2":900,"stock":{"XS":0,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-PORT-MAR-@"},{"linea":"Premium","modelo":"Porte","color":"NARANJA","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-PORT-NAR-@"},{"linea":"Premium","modelo":"Porte","color":"NEGRO","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-PORT-NEG-@"},{"linea":"Premium","modelo":"Porte","color":"OLIVO","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-PORT-OLI-@"},{"linea":"Premium","modelo":"Porte","color":"TARO","unit":980,"promo2":900,"stock":{"XS":0,"S":0,"M":1,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-PORT-TAR-@"},{"linea":"Premium","modelo":"Stretto","color":"BLANCO","unit":890,"promo2":800,"stock":{"XS":2,"S":1,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-STRE-BLA-@"},{"linea":"Premium","modelo":"Stretto","color":"NARANJA","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-STRE-NAR-@"},{"linea":"Premium","modelo":"Stretto","color":"PIZARRA","unit":890,"promo2":800,"stock":{"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-STRE-PIZ-@"},{"linea":"Premium","modelo":"Stretto","color":"ROSA","unit":890,"promo2":800,"stock":{"XS":1,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0},"sku":"PRE-STRE-ROS-@"}];
+const LISTAS={"1":{n:"precio de lista",f:1},"sc":{n:"lista Santa Carmen",f:0.625},"of":{n:"lista Ortofacial",f:0.625}};
+const ORDENES=[
+ {etapa:"corte",linea:"Light",modelo:"Freddo",color:"NEGRO",destino:"maquila",fecha:"14 de octubre",stock:{S:12,M:18,L:18,XL:12}},
+ {etapa:"maquila",linea:"Light",modelo:"Freddo",color:"MARINO",destino:"almacén",fecha:"29 de septiembre",stock:{XS:6,S:12,M:14,L:10,XL:6}},
+ {etapa:"maquila",linea:"Light",modelo:"Porte",color:"ACERO",destino:"almacén",fecha:"6 de octubre",stock:{S:8,M:12,L:10,XL:6}},
+ {etapa:"taller",linea:"Premium",modelo:"Lusso",color:"VINO",destino:"cliente",fecha:"26 de septiembre",stock:{M:2},pedido:"Pedido de Santa Carmen"}
+];
+const $=id=>document.getElementById(id);
+let bitacora=[
+ {h:"09:14",sku:"LIG-FRED-MAR-S",p:"Freddo Light · Marino",t:"S / S",q:1,d:"directo",i:649,ej:true},
+ {h:"10:02",sku:"PRE-PORT-NEG-XL",p:"Porte Premium · Negro",t:"F:L / P:XL",q:1,d:"ajuste",i:980,ej:true}
+];
+
+function skuDe(it,t){
+  const cl=(s,n)=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,n);
+  return cl(it.linea,3)+"-"+cl(it.modelo,4)+"-"+cl(it.color,3)+"-"+t;
+}
+function precioUnit(it,q,lista){
+  const f=LISTAS[lista].f; let base,nivel;
+  if(lista!=="1"){ base=Math.round(it.unit*f*100)/100; nivel=LISTAS[lista].n; }
+  else if(q>=12){ base=Math.round(it.unit*0.8*100)/100; nivel="mayoreo · 12 piezas o más (−20%)"; }
+  else if(q>=6){ base=Math.round(it.unit*0.9*100)/100; nivel="medio mayoreo · 6 piezas (−10%)"; }
+  else if(q===2&&it.promo2){ base=it.promo2; nivel="promoción 2 uniformes"; }
+  else { base=it.unit; nivel="precio unitario"; }
+  return {base,nivel};
+}
+const money=n=>"$"+n.toLocaleString("es-MX",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+
+const itemActual=()=>CAT.find(x=>x.linea===$("linea").value&&x.modelo===$("modelo").value&&x.color===$("color").value);
+function llenaLinea(){$("linea").innerHTML=[...new Set(CAT.map(x=>x.linea))].map(l=>`<option>${l}</option>`).join("");}
+function llenaModelo(){
+  const ms=[...new Set(CAT.filter(x=>x.linea===$("linea").value).map(x=>x.modelo))].sort();
+  const prev=$("modelo").value; $("modelo").innerHTML=ms.map(m=>`<option>${m}</option>`).join("");
+  if(ms.includes(prev))$("modelo").value=prev;
+}
+function llenaColor(){
+  const cs=CAT.filter(x=>x.linea===$("linea").value&&x.modelo===$("modelo").value);
+  const prev=$("color").value;
+  $("color").innerHTML=cs.map(c=>`<option value="${c.color}">${c.color} — ${TALLAS.reduce((a,t)=>a+c.stock[t],0)} en almacén</option>`).join("");
+  if(cs.some(c=>c.color===prev))$("color").value=prev;
+}
+function llenaTallas(){
+  const o=TALLAS.map(t=>`<option>${t}</option>`).join("");
+  ["tf","tp"].forEach(id=>{const p=$(id).value;$(id).innerHTML=o;if(TALLAS.includes(p))$(id).value=p;});
+}
+const enCamino=(it,talla,q)=>ORDENES.find(o=>o.destino==="almacén"&&o.linea===it.linea&&o.modelo===it.modelo&&o.color===it.color&&(o.stock[talla]||0)>=q);
+
+function resolver(){
+  const it=itemActual(); if(!it)return;
+  const tf=$("tf").value, tp=$("tp").value, q=Math.max(1,parseInt($("qty").value)||1);
+  const i=TALLAS.indexOf(tf), j=TALLAS.indexOf(tp);
+  const mayorIdx=Math.max(i,j), menorIdx=Math.min(i,j), d=mayorIdx-menorIdx;
+  const mayor=TALLAS[mayorIdx], menor=TALLAS[menorIdx], arriba=TALLAS[mayorIdx+1]||null;
+  const pr=precioUnit(it,q,$("cliente").value), importe=pr.base*q;
+  const hayMayor=it.stock[mayor]>=q, hayArriba=arriba?it.stock[arriba]>=q:false;
+  const camino=enCamino(it,mayor,q);
+
+  $("mixLabel").textContent = d===0?"tallas iguales":(d===1?"mixtas · 1 escalón":"mixtas · "+d+" escalones");
+  $("regla").textContent = d===0?"Regla del escalón":(d===1?"1 escalón · se puede":d+" escalones · no se puede");
+  $("skuOut").textContent = skuDe(it,mayor)+(d===0?"":" · se abre este");
+  $("precioOut").innerHTML = `<b>${money(pr.base)}</b> por pieza · ${pr.nivel} · total <b>${money(importe)}</b>`;
+
+  const V=$("veredicto"), O=$("opciones"); O.innerHTML="";
+  const desc=`${it.modelo} ${it.linea} · ${it.color}`;
+  const tallasTxt = d===0?`${mayor} / ${mayor}`:`F:${tf} / P:${tp}`;
+
+  let clase,kick,tit,sub;
+  if(d===0&&hayMayor){clase="v-ok";kick="Sale de almacén";tit=`Hay ${it.stock[mayor]} paquetes ${mayor}`;sub="Se entrega hoy mismo. No pasa por el taller.";}
+  else if(d===1&&hayMayor){clase="v-ok";kick="Almacén + ajuste";tit=`Se abre el paquete ${mayor}`;sub=`Quedan ${it.stock[mayor]}. El taller de confección baja ${i>j?"la filipina":"el pantalón"} de ${mayor} a ${menor}.`;}
+  else if(d===0&&hayArriba){clase="v-warn";kick="Se resuelve bajando";tit=`No hay ${mayor}, pero hay ${it.stock[arriba]} en ${arriba}`;sub="Se abre un paquete de la talla de arriba y el taller baja las dos prendas.";}
+  else if(camino){clase="v-warn";kick="Viene en camino";tit=`Ya hay ${mayor} en ${camino.etapa}`;sub=`Entra al almacén el ${camino.fecha}. No hace falta volver a cortar.`;}
+  else if(d>=2){clase="v-stop";kick="No se puede ajustar";tit=`${tf} y ${tp} están a ${d} escalones`;sub="Solo se baja una talla a la vez. Este pedido se manda a cortar.";}
+  else if(d===1){clase="v-stop";kick="No hay en almacén";tit=`Sin paquetes ${mayor} en ${it.color}`;sub=`En tallas mixtas solo sirve el paquete ${mayor}: uno de ${arriba||"la talla de arriba"} dejaría la otra prenda a dos escalones. Se manda a cortar.`;}
+  else {clase="v-stop";kick="No hay en almacén";tit=`Sin paquetes ${mayor}${arriba?` ni ${arriba}`:""} en ${it.color}`;sub="No hay de dónde bajar. Se manda a cortar.";}
+  V.innerHTML=`<div class="verdict ${clase}"><div class="kicker">${kick}</div><h3>${tit}</h3><p>${sub}</p></div>`;
+
+  const opt=(cls,tag,titulo,det,btn,fn,extra="")=>{
+    const el=document.createElement("div"); el.className="opt "+cls;
+    el.innerHTML=`<div><div class="eyebrow">${tag}</div><div class="m">${titulo}</div><div class="d">${det}</div>${extra}</div>`;
+    const b=document.createElement("button"); b.className="go"+(cls==="gho"?" quiet":""); b.textContent=btn;
+    b.onclick=fn; el.appendChild(b); O.appendChild(el);
+  };
+  const ajustesHoy=bitacora.filter(r=>r.d==="ajuste").length;
+  const colaTaller=`<div class="flag"><b>El taller de confección es el mismo que saca los pedidos.</b> Hoy llevan ${ajustesHoy} ajuste${ajustesHoy===1?"":"s"}: cada uno le quita tiempo a un pedido con fecha.</div>`;
+
+  if(d===0&&hayMayor)
+    opt("pri","Inmediata",`Surtir ${q} paquete${q>1?"s":""} ${mayor}`,
+      `Quedan ${it.stock[mayor]} en ${it.color}. Sale el mismo día.`,"Surtir",
+      ()=>cerrar(it,mayor,q,"directo",importe,desc,tallasTxt));
+
+  if(d===1&&hayMayor)
+    opt("pri","1 a 2 días",`Abrir paquete ${mayor} y bajar ${i>j?"la filipina":"el pantalón"} a ${menor}`,
+      `Se descuenta ${q} paquete ${mayor}. El cliente paga lo mismo y no se entera del ajuste.`,
+      "Surtir con ajuste",()=>cerrar(it,mayor,q,"ajuste",importe,desc,tallasTxt),colaTaller);
+
+  if(d===0&&!hayMayor&&hayArriba){
+    const aviso = DEM[arriba]>=40
+      ? `<div class="flag"><b>Ojo:</b> la ${arriba} es de las que más salen — ${DEM[arriba]} renglones en ago–sep. Si la abres para cubrir una ${mayor}, te quedas sin la que más vendes.</div>`
+      : `<div class="flag info"><b>Conviene:</b> la ${arriba} casi no se pide — ${DEM[arriba]} renglones en ago–sep. Es stock dormido que aquí se vuelve venta.</div>`;
+    opt("sec","1 a 2 días",`Bajar un paquete ${arriba} a ${mayor}`,
+      `El taller ajusta las dos prendas. Quedan ${it.stock[arriba]} en ${arriba}.`,
+      "Bajar de talla",()=>cerrar(it,arriba,q,"ajuste",importe,desc,tallasTxt),aviso+colaTaller);
+  }
+
+  if(camino&&!hayMayor)
+    opt("sec","Ya está en proceso",`Apartar de la orden que está en ${camino.etapa}`,
+      `${camino.stock[mayor]} piezas ${mayor} de ${it.color} entran al almacén el ${camino.fecha}. Se aparta y no se vuelve a cortar.`,
+      "Apartar",()=>cerrar(it,null,q,"apartado",importe,desc,tallasTxt));
+
+  opt(d===0&&hayMayor?"gho":"ter","Corte → taller de confección","Mandar a cortar",
+    "De 15 a 20 días hábiles. Se corta del mismo tendido, así el paquete sale de un solo tono.",
+    "Mandar a cortar",()=>cerrar(it,null,q,"corte",importe,desc,tallasTxt));
+
+  const otros=CAT.filter(x=>x.linea===it.linea&&x.modelo===it.modelo&&x.color!==it.color&&x.stock[mayor]>=q);
+  if(otros.length&&!(d===0&&hayMayor)){
+    const el=document.createElement("div"); el.className="opt gho";
+    el.innerHTML=`<div><div class="eyebrow">Inmediata · otro color</div><div class="m">Mismo modelo en ${mayor}</div>
+      <div class="d">Si el cliente es flexible con el color, sale hoy.</div>
+      <div class="swatches">${otros.slice(0,7).map(o=>`<span class="sw" data-c="${o.color}">${o.color} · ${o.stock[mayor]}</span>`).join("")}</div></div>`;
+    O.appendChild(el);
+    el.querySelectorAll(".sw").forEach(s=>s.onclick=()=>{$("color").value=s.dataset.c;resolver();});
+  }
+
+  opt("gho","Si no cerró","El cliente no aceptó ninguna",
+    "Queda registrado qué pidió y no se le pudo dar. Es el dato que hoy no existe en ningún lado.",
+    "No se concretó",()=>cerrar(it,null,q,"perdida",0,desc,tallasTxt));
+
+  pintaDemanda(d===0?mayor:null);
+}
+
+function cerrar(it,tallaDescontar,q,desenlace,importe,desc,tallasTxt){
+  if(tallaDescontar) it.stock[tallaDescontar]=Math.max(0,it.stock[tallaDescontar]-q);
+  const now=new Date(), mayor=TALLAS[Math.max(TALLAS.indexOf($("tf").value),TALLAS.indexOf($("tp").value))];
+  bitacora.unshift({h:String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0"),
+    sku:skuDe(it,tallaDescontar||mayor),p:desc,t:tallasTxt,q,d:desenlace,i:importe});
+  llenaColor(); pintaBitacora(); resolver();
+}
+
+function pintaBitacora(){
+  const T={directo:["a","Directo de almacén"],ajuste:["b","Ajuste de talla"],apartado:["b","Apartado en proceso"],corte:["c","A corte"],perdida:["d","No se concretó"]};
+  $("bitacora").innerHTML=bitacora.map(r=>`<tr>
+    <td class="mono">${r.h}</td><td class="mono" style="font-size:11.5px">${r.sku}</td>
+    <td>${r.p}${r.ej?'<span class="ej">ejemplo</span>':""}</td>
+    <td class="mono" style="font-size:11.5px">${r.t}</td>
+    <td class="num">${r.q}</td><td><span class="tag ${T[r.d][0]}">${T[r.d][1]}</span></td>
+    <td class="num">${r.i?money(r.i):"—"}</td></tr>`).join("");
+  const c=k=>bitacora.filter(r=>r.d===k).length;
+  const vendido=bitacora.filter(r=>r.d!=="perdida").reduce((a,r)=>a+r.i,0);
+  $("stats").innerHTML=`
+    <div class="st a"><div class="n">${money(vendido)}</div><div class="l">Vendido</div></div>
+    <div class="st b"><div class="n">${c("ajuste")}</div><div class="l">Ajustes al taller</div></div>
+    <div class="st c"><div class="n">${c("corte")}</div><div class="l">Mandados a cortar</div></div>
+    <div class="st d"><div class="n">${c("perdida")}</div><div class="l">Ventas perdidas</div></div>`;
+  $("chipStock").textContent=CAT.reduce((a,x)=>a+TALLAS.reduce((b,t)=>b+x.stock[t],0),0).toLocaleString("es-MX")+" piezas";
+}
+function pintaFlujo(){
+  const et=[["corte","Taller de corte","surte a los dos"],["maquila","Maquila","confecciona stock → almacén"],["taller","Taller de confección","confecciona pedidos y hace los ajustes"]];
+  $("flujo").innerHTML=et.map(([k,nm,dest])=>{
+    const os=ORDENES.filter(o=>o.etapa===k);
+    return `<div class="etapa"><span class="eyebrow">${nm}</span><div class="dest">${dest}</div>
+      ${os.map(o=>`<div class="orden"><div class="nm">${o.modelo} ${o.linea} · ${o.color}<span class="ej">ejemplo</span></div>
+        <div class="mt">${o.pedido?o.pedido+" · entrega ":"→ "+o.destino+" el "}${o.fecha}</div>
+        <div class="pz">${Object.entries(o.stock).map(([t,n])=>t+":"+n).join("  ")}  ·  ${Object.values(o.stock).reduce((a,b)=>a+b,0)} pzas</div>
+      </div>`).join("")||'<div class="orden"><div class="mt">Sin órdenes abiertas.</div></div>'}</div>`;
+  }).join("");
+}
+function pintaDemanda(resalta){
+  const max=Math.max(...Object.values(DEM));
+  $("demanda").innerHTML=TALLAS.map(t=>`<div class="dm ${t===resalta?"on":""}">
+    <div class="bar"><div class="fill" style="height:${Math.max(5,DEM[t]/max*100)}%"></div></div>
+    <div class="lb">${t}</div><div class="lb">${DEM[t]}</div></div>`).join("");
+}
+
+llenaLinea(); llenaModelo(); llenaColor(); llenaTallas();
+(function arranque(){
+  for(const it of CAT) for(let k=1;k<5;k++)
+    if(it.stock[TALLAS[k]]===0&&it.stock[TALLAS[k+1]]>=2){
+      $("linea").value=it.linea; llenaModelo(); $("modelo").value=it.modelo; llenaColor();
+      $("color").value=it.color; $("tf").value=TALLAS[k]; $("tp").value=TALLAS[k]; return;
+    }
+})();
+["cliente","linea","modelo","color","tf","tp","qty"].forEach(id=>$(id).addEventListener("change",()=>{
+  if(id==="linea"){llenaModelo();llenaColor();}
+  if(id==="modelo"){llenaColor();}
+  resolver();
+}));
+$("qty").addEventListener("input",resolver);
+pintaBitacora(); pintaFlujo(); resolver();
+const panes={mostrador:$("pane-mostrador"),presentacion:$("pane-presentacion")};
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));
+  const t=b.dataset.t;
+  panes.mostrador.hidden = t!=="mostrador";
+  panes.presentacion.hidden = t!=="presentacion";
+  $("chipStock").hidden = t!=="mostrador";
+  $("chipFecha").hidden = t!=="mostrador";
+  window.scrollTo({top:0,behavior:"instant"});
+});
+</script>
+
+</body>
+</html>
