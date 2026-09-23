@@ -354,7 +354,8 @@ footer.note b{color:var(--tinta2);font-weight:600}
 .antes td:first-child{font-weight:600;white-space:nowrap}
 .antes td.hoy{color:var(--tinta2)}
 .antes td.luego{color:var(--tinta)}
-.semanas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.semanas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:1040px){.semanas{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:900px){.semanas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.semanas{grid-template-columns:minmax(0,1fr)}}
 .sem{background:var(--papel);border-radius:var(--r);padding:17px;box-shadow:var(--sombra)}
@@ -619,6 +620,7 @@ img{max-width:100%}
       <h3>Incluye</h3>
       <ul>
         <li>Catálogo con clave por producto: línea, modelo, color y talla, cargado con el inventario actual</li>
+        <li>Un solo inventario con Shopify: lo que se vende en un lado baja del otro</li>
         <li>Pantalla de venta para mostrador, WhatsApp e Instagram, con el vendedor identificado</li>
         <li>El resolvedor de faltantes con las reglas de Affari: paquete completo, ajuste de una talla, o corte</li>
         <li>Descuento de inventario al cerrar la venta</li>
@@ -633,8 +635,8 @@ img{max-width:100%}
     <div class="caja no">
       <h3>No incluye en esta fase</h3>
       <ul>
-        <li>Sincronizar inventario con Shopify en automático</li>
         <li>Facturación CFDI</li>
+        <li>Publicar o editar productos en Shopify desde el sistema</li>
         <li>Control de telas y materia prima</li>
         <li>Seguimiento de órdenes de corte y entregas de maquila</li>
         <li>Costos de producción y margen por modelo</li>
@@ -645,7 +647,7 @@ img{max-width:100%}
     </div>
   </div>
 
-  <h2 class="h2p">Cuánto tarda <span>cuatro semanas, usable desde la segunda</span></h2>
+  <h2 class="h2p">Cuánto tarda <span>cinco semanas, usable desde la segunda</span></h2>
   <div class="semanas">
     <div class="sem"><span class="w">Semana 1</span><h3>El catálogo</h3>
       <p>Se le pone clave a cada producto, se ordenan las tallas y se carga el inventario del último conteo. Aquí se decide qué lista de precios queda vigente.</p></div>
@@ -654,7 +656,10 @@ img{max-width:100%}
       <span class="hito">→ Ya se puede vender con él</span></div>
     <div class="sem"><span class="w">Semana 3</span><h3>WhatsApp y taller</h3>
       <p>Tickets por WhatsApp, captura desde el teléfono, las órdenes de ajuste y de corte llegando al taller, y los reportes de cierre.</p></div>
-    <div class="sem"><span class="w">Semana 4</span><h3>Acompañamiento</h3>
+    <div class="sem"><span class="w">Semana 4</span><h3>Shopify</h3>
+      <p>Se empareja cada variante de la tienda en línea con su producto del catálogo y se conecta el inventario en los dos sentidos. Desde aquí, vender en el mostrador baja el stock de la tienda.</p>
+      <span class="hito">→ Se acaba la sobreventa</span></div>
+    <div class="sem"><span class="w">Semana 5</span><h3>Acompañamiento</h3>
       <p>Una semana en piso con las cuatro personas, corrigiendo lo que salga de la operación real. Al terminar se apaga el Excel de pedidos.</p>
       <span class="hito">→ Entrega</span></div>
   </div>
@@ -662,14 +667,14 @@ img{max-width:100%}
   <h2 class="h2p">Inversión <span>pesos mexicanos, sin IVA</span></h2>
   <div class="cotiza">
     <div class="cot-row">
-      <div><div class="q">Catálogo con clave por producto</div>
-        <div class="qd">Todo el catálogo con su clave, tallas ordenadas, precios por nivel y carga del inventario. Sin una clave por producto no hay punto de venta que pueda cobrar ni descontar bien: va primero. Queda de Affari aunque decidan no seguir con lo demás.</div></div>
-      <div class="v">$12,000</div>
+      <div><div class="q">Punto de venta</div>
+        <div class="qd">El catálogo con clave por producto cargado con su inventario, la pantalla de venta, el resolvedor de faltantes, el descuento de almacén, los cinco niveles de precio y las listas de Santa Carmen y Ortofacial, los tickets por WhatsApp, las órdenes al taller, los reportes y la capacitación de las cuatro personas.</div></div>
+      <div class="v">$38,000</div>
     </div>
     <div class="cot-row">
-      <div><div class="q">Módulo de punto de venta</div>
-        <div class="qd">Todo lo de la columna «Incluye»: la pantalla de venta, el resolvedor de faltantes, el descuento de inventario, los precios por nivel y cliente, los tickets, las órdenes al taller, los reportes y la capacitación.</div></div>
-      <div class="v">$38,000</div>
+      <div><div class="q">Conexión con Shopify</div>
+        <div class="qd">Un solo inventario entre la tienda física, WhatsApp y la tienda en línea: lo que se vende en el mostrador baja de Shopify, y lo que se vende en Shopify baja del almacén. Incluye emparejar cada variante de la tienda con su producto del catálogo — hoy 336 de las 515 no tienen clave, y ese emparejado es la mitad del trabajo.</div></div>
+      <div class="v">$12,000</div>
     </div>
     <div class="cot-row total"><div class="q">Total de implementación</div><div class="v">$50,000</div></div>
     <div class="cot-row mes">
@@ -678,8 +683,8 @@ img{max-width:100%}
       <div class="v">$3,500 / mes</div>
     </div>
     <div class="cot-pie">
-      <b>Forma de pago:</b> 50% al arrancar y 50% contra entrega, al cerrar la semana 4. &nbsp;·&nbsp;
-      <b>Si no funciona:</b> en la semana 2 ya se puede vender con él. Si ahí no le sirve a la operación, se detiene y solo se paga el catálogo. &nbsp;·&nbsp;
+      <b>Forma de pago:</b> 50% al arrancar y 50% contra entrega, al cerrar la semana 5. &nbsp;·&nbsp;
+      <b>Si no funciona:</b> en la semana 2 ya se puede vender con él. Si ahí no le sirve a la operación, se detiene y se paga la mitad. &nbsp;·&nbsp;
       <b>Aparte:</b> el hosting y el número de WhatsApp del negocio se contratan a nombre de Affari y se pagan directo — del orden de $400 a $900 al mes. Así la cuenta siempre es suya.
     </div>
   </div>
