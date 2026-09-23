@@ -172,6 +172,10 @@ footer.note b{color:var(--ink-2);font-weight:600}
 .cifra{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line)}
 .cifra b{font-family:"Archivo Black",Archivo,sans-serif;font-size:23px;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;min-width:82px}
 .cifra span{font-size:13px;color:var(--ink-2);line-height:1.4}
+.obs{padding:13px 0;border-bottom:1px solid var(--line)}
+.obs b{display:block;font-family:"Archivo Black",Archivo,sans-serif;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px}
+.obs span{font-size:13.5px;color:var(--ink-2);line-height:1.5;display:block}
+.obs .mono{font-size:12px;color:var(--ink);background:var(--surface-2);padding:1px 5px;border:1px solid var(--line);white-space:nowrap}
 
 .h2p{font-family:"Archivo Black",Archivo,sans-serif;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding-bottom:9px;border-bottom:1px solid var(--ink);margin:48px 0 20px}
 .h2p span{font-family:"IBM Plex Sans";font-weight:400;font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--ink-3);margin-left:12px}
@@ -290,7 +294,7 @@ img{max-width:100%}
         </div>
 
         <div class="ficha">
-          <div>SKU del paquete <b class="mono" id="skuOut">—</b></div>
+          <div>Clave del paquete <b class="mono" id="skuOut">—</b></div>
           <div id="precioOut">—</div>
         </div>
       </div>
@@ -311,7 +315,7 @@ img{max-width:100%}
   <div class="tbl-wrap">
     <table>
       <thead><tr>
-        <th>Hora</th><th>SKU</th><th>Producto</th><th>Tallas</th>
+        <th>Hora</th><th>Clave</th><th>Producto</th><th>Tallas</th>
         <th style="text-align:right">Pzas</th><th>Desenlace</th><th style="text-align:right">Importe</th>
       </tr></thead>
       <tbody id="bitacora"></tbody>
@@ -326,13 +330,13 @@ img{max-width:100%}
 
   <div class="sectitle">
     <h2>Qué tanto sale cada talla</h2>
-    <span>renglones vendidos en agosto y septiembre de 2026</span>
+    <span>el sistema lo va calculando con las ventas capturadas</span>
   </div>
   <div class="demanda" id="demanda"></div>
 </div>
 
 <footer class="note">
-  <p><b>Prototipo.</b> El inventario, los modelos, los colores y los precios salen de los archivos de Affari: el conteo físico del 14 de septiembre de 2026 —108 combinaciones de modelo y color, 609 piezas— y la lista de precios de la hoja <span class="mono">Data</span>. Los SKU son una propuesta: hoy el catálogo no tiene. Las órdenes de «lo que viene en camino» son un ejemplo para mostrar cómo se vería; todavía no hay de dónde sacarlas.</p>
+  <p><b>Prototipo.</b> Está cargado con el conteo físico del 14 de septiembre y con la lista de precios de Affari, para que se pruebe con producto real y no con ejemplos inventados. Las claves de producto son una propuesta: hoy el catálogo no tiene. Las órdenes de «lo que viene en camino» son un ejemplo de cómo se vería; todavía no hay de dónde sacarlas.</p>
   <p><b>Reglas aplicadas.</b> El paquete es la unidad: filipina y pantalón del mismo tendido, por eso no se mezclan piezas de paquetes distintos. Solo se baja <b>una talla a la vez</b> y nunca se sube. En tallas mixtas se abre el paquete de la talla mayor. Si no hay, se abre uno de la talla de arriba y se ajustan las dos prendas. El ajuste lo hace el <b>taller de confección</b>, el mismo que saca los pedidos. Si nada de eso alcanza, va a <b>corte</b> y de ahí al taller: de 15 a 20 días hábiles. El almacén solo se repone con lo que entrega la <b>maquila</b>.</p>
 </footer>
 </section>
@@ -342,65 +346,65 @@ img{max-width:100%}
   <div class="lede">
     <div>
       <h1>Cada venta descuenta el almacén en el momento.</h1>
-      <p class="dek">Affari vende bien: agosto cerró en <b>$119,789</b> y septiembre va en ritmo parecido. El problema es otro. Hoy la venta se anota en una hoja y el almacén se cuenta aparte, a mano, una vez por semana entre cuatro personas — y aun así el número no se cree. Con este módulo la venta se captura una sola vez: el inventario baja solo, el ticket sale solo y el corte del día ya está hecho. <b>Lo que dice la pantalla es lo que hay en el anaquel</b>, y nadie tiene que preguntar si hay.</p>
+      <p class="dek">Hoy la venta se anota en una hoja y el almacén se cuenta aparte, a mano, cada semana. Con este módulo la venta se captura una sola vez: el inventario baja solo, el ticket sale solo y el corte del día ya está hecho. <b>Lo que dice la pantalla es lo que hay en el anaquel.</b></p>
     </div>
     <div class="cifras">
-      <div class="cifra"><b>609</b><span>piezas contadas a mano cada semana, entre Orlando, Kass, Fer y la vendedora del local</span></div>
-      <div class="cifra"><b>49%</b><span>de la venta de agosto y septiembre entró por WhatsApp e Instagram, pero en la hoja aparece bajo un nombre de persona, no como canal</span></div>
-      <div class="cifra"><b>11</b><span>formas distintas de escribir una talla mixta en la misma columna</span></div>
-      <div class="cifra"><b>0</b><span>ventas perdidas registradas: cuando alguien pide algo que no hay y se va, no queda rastro</span></div>
+      <div class="obs"><b>Inventario</b><span>Se cuenta completo, a mano, cada semana, entre Orlando, Kass, Fer y la vendedora del local.</span></div>
+      <div class="obs"><b>Canales</b><span>Lo que se vende por WhatsApp o Instagram se anota con el nombre de quien atendió. Al cierre del mes no se puede separar qué entró por cada canal.</span></div>
+      <div class="obs"><b>Tallas</b><span>Cuando el pedido lleva filipina de una talla y pantalón de otra, cada quien lo escribe a su manera: <span class="mono">F:M/P:L</span>, <span class="mono">F-M P-L</span>, <span class="mono">FI. M -PA L</span>.</span></div>
+      <div class="obs"><b>Faltantes</b><span>Si alguien pide algo que no hay y se va, no queda registro en ningún lado.</span></div>
     </div>
   </div>
 
-  <h2 class="h2p">Qué hace el sistema <span>cuatro cosas, y nada más</span></h2>
+  <h2 class="h2p">Qué hace <span>cuatro cosas, y nada más</span></h2>
   <div class="pasos">
     <div class="paso"><span class="nu">01</span><h3>Identifica el producto</h3>
-      <p>Cada paquete tiene un SKU: línea, modelo, color y talla. Se elige de una lista, no se escribe. Se acabó que «Freddo Light» y «Freddo Ligth» sean dos productos distintos.</p></div>
+      <p>Cada paquete tiene una clave: línea, modelo, color y talla. Se elige de una lista, no se escribe a mano. Se acaba que «Freddo Light» y «Freddo Ligth» cuenten como dos productos distintos.</p></div>
     <div class="paso"><span class="nu">02</span><h3>Resuelve el faltante</h3>
-      <p>Al capturar el pedido dice si sale de almacén, si se abre un paquete de la talla de arriba para ajustarlo, si ya viene en camino, o si hay que mandarlo a cortar. Lo dice en el momento, sin que nadie tenga que ir a ver al almacén.</p></div>
-    <div class="paso"><span class="nu">03</span><h3>Cobra al precio correcto</h3>
-      <p>Aplica solo el nivel que toca —unitario, dos uniformes, medio mayoreo, mayoreo— y las listas propias de Santa Carmen y Ortofacial. Ya no se discute un precio.</p></div>
-    <div class="paso"><span class="nu">04</span><h3>Descuenta y deja rastro</h3>
-      <p>Al cobrar, esa talla de ese color baja del almacén sola. Queda registrado quién vendió, por qué canal, qué ajuste se le mandó al taller y qué venta no se pudo cerrar.</p></div>
+      <p>Al capturar el pedido dice si sale de almacén, si se abre un paquete de la talla de arriba para ajustarlo, si ya viene en camino, o si hay que mandarlo a cortar. Lo dice en el momento, sin que nadie vaya a ver al almacén.</p></div>
+    <div class="paso"><span class="nu">03</span><h3>Cobra al precio que toca</h3>
+      <p>Aplica solo el nivel correspondiente —unitario, dos uniformes, medio mayoreo, mayoreo— y las listas propias de Santa Carmen y Ortofacial. Nadie tiene que buscar el precio.</p></div>
+    <div class="paso"><span class="nu">04</span><h3>Descuenta y deja registro</h3>
+      <p>Al cobrar, esa talla de ese color baja del almacén sola. Queda anotado quién vendió, por qué canal, qué ajuste se le mandó al taller y qué venta no se pudo cerrar.</p></div>
   </div>
 
-  <h2 class="h2p">Cómo cambia el día a día <span>quién hace qué, antes y después</span></h2>
+  <h2 class="h2p">Cómo se trabaja con él <span>quién hace qué, antes y después</span></h2>
   <div class="tbl-wrap" style="border-top:1px solid var(--line)">
   <table class="antes">
     <thead><tr><th>Quién</th><th>Hoy</th><th>Con el sistema</th></tr></thead>
     <tbody>
       <tr><td>Fer<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">WhatsApp e Instagram</span></td>
-        <td class="hoy">Cierra la venta y le pregunta a Kass si hay. Anota el renglón en el Excel cuando puede.</td>
+        <td class="hoy">Cierra la venta y pregunta si hay. Anota el renglón en el Excel cuando puede.</td>
         <td class="luego">Captura el pedido en el teléfono y ahí mismo le dice si sale hoy, en dos días o en tres semanas. Le da al cliente una fecha que sí se va a cumplir.</td></tr>
       <tr><td>Vendedora<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">del local</span></td>
-        <td class="hoy">Cobra y anota. El precio de mayoreo lo busca en una hoja con dos tablas distintas.</td>
-        <td class="luego">Cobra con el precio ya calculado y manda el ticket por WhatsApp. El inventario baja solo.</td></tr>
+        <td class="hoy">Cobra y anota. Para el precio de mayoreo busca en la hoja.</td>
+        <td class="luego">Cobra con el precio ya puesto y manda el ticket por WhatsApp. El inventario baja solo.</td></tr>
       <tr><td>Kass<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">almacén y taller</span></td>
-        <td class="hoy">Es la única que sabe qué hay. Todo pasa por ella, y por eso todo se detiene cuando no está.</td>
-        <td class="luego">Recibe las órdenes de ajuste y de corte en una lista, no en un chat. Deja de ser la única que sabe qué hay, y el trabajo no se detiene cuando ella no está.</td></tr>
+        <td class="hoy">Es quien sabe qué hay, qué se está ajustando y qué está en corte. Todo pasa por ella.</td>
+        <td class="luego">Recibe las órdenes de ajuste y de corte en una lista, no en un chat. El trabajo no se detiene cuando ella no está.</td></tr>
       <tr><td>Orlando<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">dirección</span></td>
-        <td class="hoy">Cuenta inventario una vez por semana y lee una columna de diferencias que apunta a una celda vacía.</td>
+        <td class="hoy">Cuenta inventario cada semana para tener un número en el que confiar.</td>
         <td class="luego">Abre el reporte: qué se vendió, por qué canal, cuántos ajustes hizo el taller y qué se dejó de vender por no tenerlo.</td></tr>
       <tr><td>El conteo<br><span style="font-weight:400;font-size:12px;color:var(--ink-3)">semanal</span></td>
-        <td class="hoy">Obligatorio. Cuatro personas, 609 piezas, cada semana, porque nadie confía en el número.</td>
-        <td class="luego">Deja de ser obligatorio. Se hace una verificación al mes, y solo sobre lo que el sistema marque descuadrado.</td></tr>
+        <td class="hoy">Cuatro personas, todo el almacén, cada semana.</td>
+        <td class="luego">Deja de ser obligatorio. Se verifica una vez al mes, y solo sobre lo que el sistema marque descuadrado.</td></tr>
     </tbody>
   </table>
   </div>
 
-  <h2 class="h2p">Hasta dónde llega este módulo <span>para que quede claro qué se está contratando</span></h2>
+  <h2 class="h2p">Hasta dónde llega <span>para que quede claro qué se contrata</span></h2>
   <div class="dos">
     <div class="caja si">
       <h3>Incluye</h3>
       <ul>
-        <li>Catálogo maestro con SKU: línea, modelo, color y talla, cargado con su inventario actual</li>
+        <li>Catálogo con clave por producto: línea, modelo, color y talla, cargado con el inventario actual</li>
         <li>Pantalla de venta para mostrador, WhatsApp e Instagram, con el vendedor identificado</li>
         <li>El resolvedor de faltantes con las reglas de Affari: paquete completo, ajuste de una talla, o corte</li>
-        <li>Descuento automático de inventario al cerrar la venta</li>
-        <li>Los cinco niveles de precio y las listas propias de Santa Carmen y Ortofacial</li>
+        <li>Descuento de inventario al cerrar la venta</li>
+        <li>Los cinco niveles de precio y las listas de Santa Carmen y Ortofacial</li>
         <li>Ticket por WhatsApp con el detalle del pedido</li>
         <li>Órdenes de ajuste y de corte para el taller</li>
-        <li>Registro de ventas perdidas</li>
+        <li>Registro de lo que se pidió y no había</li>
         <li>Reporte de cierre diario y semanal</li>
         <li>Capacitación a las cuatro personas y acompañamiento en piso la primera semana</li>
       </ul>
@@ -416,29 +420,29 @@ img{max-width:100%}
         <li>Contabilidad, nómina o bancos</li>
         <li>Aplicación para que el cliente final compre</li>
       </ul>
-      <p class="pie">Nada de esto está descartado: son fases siguientes y se cotizan aparte. Se deja fuera a propósito para que el punto de venta arranque en semanas y no en meses.</p>
+      <p class="pie">Nada de esto está descartado: son fases siguientes y se cotizan aparte. Se deja fuera para que el punto de venta arranque en semanas y no en meses.</p>
     </div>
   </div>
 
   <h2 class="h2p">Cuánto tarda <span>cuatro semanas, usable desde la segunda</span></h2>
   <div class="semanas">
     <div class="sem"><span class="w">Semana 1</span><h3>El catálogo</h3>
-      <p>Se le pone SKU a los 108 modelos-color, se ordenan las tallas y se carga el inventario del último conteo. Aquí se decide cuál lista de precios queda vigente.</p></div>
+      <p>Se le pone clave a cada producto, se ordenan las tallas y se carga el inventario del último conteo. Aquí se decide qué lista de precios queda vigente.</p></div>
     <div class="sem"><span class="w">Semana 2</span><h3>El mostrador</h3>
-      <p>La pantalla de venta funcionando con el resolvedor de faltantes y el descuento de inventario. Empieza a usarse en el local en paralelo al Excel.</p>
+      <p>La pantalla de venta funcionando, con el resolvedor de faltantes y el descuento de inventario. Empieza a usarse en el local, en paralelo al Excel.</p>
       <span class="hito">→ Ya se puede vender con él</span></div>
     <div class="sem"><span class="w">Semana 3</span><h3>WhatsApp y taller</h3>
-      <p>Tickets por WhatsApp, captura desde el teléfono de Fer, las órdenes de ajuste y de corte llegando a Kass, y los reportes de cierre.</p></div>
+      <p>Tickets por WhatsApp, captura desde el teléfono, las órdenes de ajuste y de corte llegando al taller, y los reportes de cierre.</p></div>
     <div class="sem"><span class="w">Semana 4</span><h3>Acompañamiento</h3>
-      <p>Una semana en piso con las cuatro personas, corrigiendo lo que la operación real saque. Al terminar, se apaga el Excel de pedidos.</p>
+      <p>Una semana en piso con las cuatro personas, corrigiendo lo que salga de la operación real. Al terminar se apaga el Excel de pedidos.</p>
       <span class="hito">→ Entrega</span></div>
   </div>
 
   <h2 class="h2p">Inversión <span>pesos mexicanos, sin IVA</span></h2>
   <div class="cotiza">
     <div class="cot-row">
-      <div><div class="q">Catálogo maestro con SKU</div>
-        <div class="qd">Los 108 modelos-color con su SKU, tallas normalizadas, precios por nivel y carga del inventario. Sin un SKU por producto no hay punto de venta que pueda cobrar ni descontar bien: esto va primero. Queda de Affari aunque decidan no seguir con lo demás.</div></div>
+      <div><div class="q">Catálogo con clave por producto</div>
+        <div class="qd">Todo el catálogo con su clave, tallas ordenadas, precios por nivel y carga del inventario. Sin una clave por producto no hay punto de venta que pueda cobrar ni descontar bien: va primero. Queda de Affari aunque decidan no seguir con lo demás.</div></div>
       <div class="v">$12,000</div>
     </div>
     <div class="cot-row">
@@ -449,13 +453,13 @@ img{max-width:100%}
     <div class="cot-row total"><div class="q">Total de implementación</div><div class="v">$50,000</div></div>
     <div class="cot-row mes">
       <div><div class="q">Acompañamiento mensual</div>
-        <div class="qd">Desde el segundo mes. Soporte, respaldos diarios, cambios chicos y ajustes a lo que la operación pida. Se puede cancelar cuando quieran.</div></div>
+        <div class="qd">Desde el segundo mes. Soporte, respaldos diarios, cambios chicos y ajustes a lo que pida la operación. Se puede cancelar cuando quieran.</div></div>
       <div class="v">$3,500 / mes</div>
     </div>
     <div class="cot-pie">
       <b>Forma de pago:</b> 50% al arrancar y 50% contra entrega, al cerrar la semana 4. &nbsp;·&nbsp;
-      <b>Qué pasa si no funciona:</b> la semana 2 ya se puede vender con él. Si en esa semana el sistema no le sirve a la operación, se detiene ahí y solo se paga el catálogo. &nbsp;·&nbsp;
-      <b>Lo que no entra:</b> el hosting y el número de WhatsApp para el negocio se contratan a nombre de Affari y se pagan aparte — es del orden de $400 a $900 al mes, y así la cuenta siempre es suya.
+      <b>Si no funciona:</b> en la semana 2 ya se puede vender con él. Si ahí no le sirve a la operación, se detiene y solo se paga el catálogo. &nbsp;·&nbsp;
+      <b>Aparte:</b> el hosting y el número de WhatsApp del negocio se contratan a nombre de Affari y se pagan directo — del orden de $400 a $900 al mes. Así la cuenta siempre es suya.
     </div>
   </div>
 
@@ -563,8 +567,8 @@ function resolver(){
 
   if(d===0&&!hayMayor&&hayArriba){
     const aviso = DEM[arriba]>=40
-      ? `<div class="flag"><b>Ojo:</b> la ${arriba} es de las que más salen — ${DEM[arriba]} renglones en ago–sep. Si la abres para cubrir una ${mayor}, te quedas sin la que más vendes.</div>`
-      : `<div class="flag info"><b>Conviene:</b> la ${arriba} casi no se pide — ${DEM[arriba]} renglones en ago–sep. Es stock dormido que aquí se vuelve venta.</div>`;
+      ? `<div class="flag"><b>Ojo:</b> la ${arriba} es de las tallas que más salen. Si la abres para cubrir una ${mayor}, te quedas sin la que más vendes.</div>`
+      : `<div class="flag info"><b>Conviene:</b> la ${arriba} casi no se pide sola. Es stock parado que aquí se vuelve venta.</div>`;
     opt("sec","1 a 2 días",`Bajar un paquete ${arriba} a ${mayor}`,
       `El taller ajusta las dos prendas. Quedan ${it.stock[arriba]} en ${arriba}.`,
       "Bajar de talla",()=>cerrar(it,arriba,q,"ajuste",importe,desc,tallasTxt),aviso+colaTaller);
