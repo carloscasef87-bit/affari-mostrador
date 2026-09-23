@@ -264,11 +264,13 @@ footer.note b{color:var(--ink-2);font-weight:600}
 .dia.max .fill{background:var(--ok)}
 .dia .d{font:700 10.5px/1 "IBM Plex Sans";letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
 .dia .v{font:500 11px/1.2 "IBM Plex Mono";color:var(--ink-2);text-align:center;word-break:break-all}
-.mini{width:100%;border-collapse:collapse;font-size:13.5px}
-.mini td{padding:11px 0;border-bottom:1px solid var(--line);vertical-align:top}
-.mini tr:last-child td{border-bottom:none}
-.mini td.num{text-align:right;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:12px;color:var(--ink-2)}
-.mini td.num.b{color:var(--ink);font-weight:500}
+.mlist{display:flex;flex-direction:column}
+.mrow{display:flex;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);min-width:0}
+.mrow:last-child{border-bottom:none}
+.mn{flex:1 1 auto;min-width:0;font-size:13.5px;overflow-wrap:anywhere}
+.mq,.mv{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
+.mq{color:var(--ink-3);text-align:right}
+.mv{color:var(--ink);font-weight:500;text-align:right;min-width:68px}
 .qn{color:var(--ink-3);font-size:12px;margin-left:6px}
 .cortar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
 @media (max-width:820px){.cortar{grid-template-columns:minmax(0,1fr)}}
@@ -283,6 +285,10 @@ footer.note b{color:var(--ink-2);font-weight:600}
 .cierre{border-top:1px solid var(--ink);margin-top:34px;padding-top:20px}
 .cierre p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);max-width:78ch}
 .cierre b{color:var(--ink);font-weight:700}
+.caja,.paso,.sem,.ct,.kpi,.etapa,.st,.dia,.dm,.obs,.cifra{min-width:0}
+.opt>div:first-child,.cot-row>div:first-child,.dash-h>div:first-child{min-width:0}
+.caja li,.ct-n,.orden .nm,.paso p,.sem p,.qd{overflow-wrap:anywhere}
+.sectitle span:empty,.h2p span:empty{display:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -356,7 +362,7 @@ img{max-width:100%}
 
   <div class="sectitle">
     <h2>El mostrador hoy</h2>
-    <span>cada decisión queda registrada — incluida la venta que no se cerró</span>
+    
   </div>
   <div class="stats" id="stats"></div>
   <div class="tbl-wrap">
@@ -371,20 +377,19 @@ img{max-width:100%}
 
   <div class="sectitle">
     <h2>Lo que viene en camino</h2>
-    <span>el cortador surte a los dos: al taller lo que es pedido, a la maquila lo que es stock</span>
+    
   </div>
   <div class="flujo" id="flujo"></div>
 
   <div class="sectitle">
     <h2>Qué tanto sale cada talla</h2>
-    <span>el sistema lo va calculando con las ventas capturadas</span>
+    
   </div>
   <div class="demanda" id="demanda"></div>
 </div>
 
 <footer class="note">
   <p><b>Prototipo.</b> Está cargado con el conteo físico del 14 de septiembre y con la lista de precios de Affari, para que se pruebe con producto real y no con ejemplos inventados. Las claves de producto son una propuesta: hoy el catálogo no tiene. Las órdenes de «lo que viene en camino» son un ejemplo de cómo se vería; todavía no hay de dónde sacarlas.</p>
-  <p><b>Reglas aplicadas.</b> El paquete es la unidad: filipina y pantalón del mismo tendido, por eso no se mezclan piezas de paquetes distintos. Solo se baja <b>una talla a la vez</b> y nunca se sube. En tallas mixtas se abre el paquete de la talla mayor. Si no hay, se abre uno de la talla de arriba y se ajustan las dos prendas. El ajuste lo hace el <b>taller de confección</b>, el mismo que saca los pedidos. Si nada de eso alcanza, va a <b>corte</b> y de ahí al taller: de 15 a 20 días hábiles. El almacén solo se repone con lo que entrega la <b>maquila</b>.</p>
 </footer>
 </section>
 <section id="pane-dashboard" hidden>
@@ -396,8 +401,8 @@ img{max-width:100%}
 
   <div class="dash-h">
     <div>
-      <span class="eyebrow">Semana 38 · del 15 al 21 de septiembre</span>
-      <h1 class="dash-t">El lunes, en una pantalla.</h1>
+      <span class="eyebrow">Resumen</span>
+      <h1 class="dash-t">Semana 38 · 15 al 21 de septiembre</h1>
     </div>
     <div class="dash-sel">
       <span class="pill on">Semana</span><span class="pill">Mes</span><span class="pill">Año</span>
@@ -407,7 +412,7 @@ img{max-width:100%}
   <div class="kpis">
     <div class="kpi"><div class="n">$31,450</div><div class="l">Vendido</div><div class="s">38 piezas · 27 pedidos</div></div>
     <div class="kpi"><div class="n">$828</div><div class="l">Ticket promedio</div><div class="s">por pedido</div></div>
-    <div class="kpi warn"><div class="n">9</div><div class="l">Ajustes al taller</div><div class="s">bajaron una talla para no perder la venta</div></div>
+    <div class="kpi warn"><div class="n">9</div><div class="l">Ajustes al taller</div><div class="s">9 pedidos surtidos bajando una talla</div></div>
     <div class="kpi stop"><div class="n">$4,180</div><div class="l">No se concretó</div><div class="s">6 clientes se fueron sin comprar</div></div>
   </div>
 
@@ -417,31 +422,25 @@ img{max-width:100%}
   <div class="dos" style="margin-top:28px">
     <div class="caja">
       <h3>Por dónde entró la venta</h3>
-      <table class="mini">
-        <tbody>
-          <tr><td>WhatsApp <span class="qn">Fer</span></td><td class="num">12</td><td class="num b">$13,890</td></tr>
-          <tr><td>Tienda <span class="qn">vendedora del local</span></td><td class="num">8</td><td class="num b">$7,240</td></tr>
-          <tr><td>Shopify</td><td class="num">5</td><td class="num b">$6,120</td></tr>
-          <tr><td>Instagram <span class="qn">Fer</span></td><td class="num">2</td><td class="num b">$4,200</td></tr>
-        </tbody>
-      </table>
-      <p class="pie">Cada venta guarda por dónde entró y quién la atendió. Es la separación que hoy no se puede hacer porque el canal y la persona van en la misma columna.</p>
+      <div class="mlist">
+        <div class="mrow"><span class="mn">WhatsApp <span class="qn">Fer</span></span><span class="mq">12</span><span class="mv">$13,890</span></div>
+        <div class="mrow"><span class="mn">Tienda <span class="qn">vendedora del local</span></span><span class="mq">8</span><span class="mv">$7,240</span></div>
+        <div class="mrow"><span class="mn">Shopify</span><span class="mq">5</span><span class="mv">$6,120</span></div>
+        <div class="mrow"><span class="mn">Instagram <span class="qn">Fer</span></span><span class="mq">2</span><span class="mv">$4,200</span></div>
+      </div>
     </div>
     <div class="caja">
       <h3>Lo que se pidió y no había</h3>
-      <table class="mini">
-        <tbody>
-          <tr><td>Freddo Light · Negro <span class="qn">M</span></td><td class="num">2</td><td class="num b">$1,298</td></tr>
-          <tr><td>Freddo Acampanado Light · Rouge <span class="qn">S</span></td><td class="num">2</td><td class="num b">$1,378</td></tr>
-          <tr><td>Porte Light · Marino <span class="qn">L</span></td><td class="num">1</td><td class="num b">$739</td></tr>
-          <tr><td>Lusso Premium · Vino <span class="qn">XL</span></td><td class="num">1</td><td class="num b">$765</td></tr>
-        </tbody>
-      </table>
-      <p class="pie">Este es el dato que hoy no existe en ningún lado. Cuando alguien pide algo que no hay y no acepta esperar, queda anotado qué era.</p>
+      <div class="mlist">
+        <div class="mrow"><span class="mn">Freddo Light · Negro <span class="qn">M</span></span><span class="mq">2</span><span class="mv">$1,298</span></div>
+        <div class="mrow"><span class="mn">Freddo Acampanado Light · Rouge <span class="qn">S</span></span><span class="mq">2</span><span class="mv">$1,378</span></div>
+        <div class="mrow"><span class="mn">Porte Light · Marino <span class="qn">L</span></span><span class="mq">1</span><span class="mv">$739</span></div>
+        <div class="mrow"><span class="mn">Lusso Premium · Vino <span class="qn">XL</span></span><span class="mq">1</span><span class="mv">$765</span></div>
+      </div>
     </div>
   </div>
 
-  <h2 class="h2p">Qué conviene mandar a cortar <span>sale de lo que se pidió y no había, más lo que está por acabarse</span></h2>
+  <h2 class="h2p">Qué conviene mandar a cortar</h2>
   <div class="cortar">
     <div class="ct"><div class="ct-n">Freddo Light · Negro</div>
       <div class="ct-t"><span class="tt hot">M</span><span class="tt">L</span></div>
@@ -457,32 +456,22 @@ img{max-width:100%}
   <div class="dos" style="margin-top:28px">
     <div class="caja">
       <h3>El taller esta semana</h3>
-      <table class="mini">
-        <tbody>
-          <tr><td>Ajustes de talla hechos</td><td class="num b">9</td></tr>
-          <tr><td>El más repetido</td><td class="num b" style="white-space:normal;text-align:right">bajar L a M<br><span class="qn">Freddo Light, 4 veces</span></td></tr>
-          <tr><td>Órdenes de corte abiertas</td><td class="num b">4</td></tr>
-          <tr><td>Pedidos entregados a tiempo</td><td class="num b">25 de 27</td></tr>
-        </tbody>
-      </table>
-      <p class="pie">Nueve ajustes son nueve veces que el taller dejó un pedido para achicar una prenda. Si el mismo ajuste se repite cuatro veces, no es tema del taller: falta cortar esa talla.</p>
+      <div class="mlist">
+        <div class="mrow"><span class="mn">Ajustes de talla hechos</span><span class="mv">9</span></div>
+        <div class="mrow"><span class="mn">El más repetido <span class="qn">Freddo Light, 4 veces</span></span><span class="mv">L a M</span></div>
+        <div class="mrow"><span class="mn">Órdenes de corte abiertas</span><span class="mv">4</span></div>
+        <div class="mrow"><span class="mn">Pedidos entregados a tiempo</span><span class="mv">25 de 27</span></div>
+      </div>
     </div>
     <div class="caja">
       <h3>Almacén</h3>
-      <table class="mini">
-        <tbody>
-          <tr><td>Piezas en existencia</td><td class="num b">571</td></tr>
-          <tr><td>Combinaciones en cero</td><td class="num b">12</td></tr>
-          <tr><td>Con una sola pieza</td><td class="num b">8</td></tr>
-          <tr><td>Descuadres por revisar</td><td class="num b">3</td></tr>
-        </tbody>
-      </table>
-      <p class="pie">El número se mueve solo con cada venta. Los tres descuadres son lo único que hay que ir a contar a mano este mes — no las 571 piezas.</p>
+      <div class="mlist">
+        <div class="mrow"><span class="mn">Piezas en existencia</span><span class="mv">571</span></div>
+        <div class="mrow"><span class="mn">Combinaciones en cero</span><span class="mv">12</span></div>
+        <div class="mrow"><span class="mn">Con una sola pieza</span><span class="mv">8</span></div>
+        <div class="mrow"><span class="mn">Descuadres por revisar</span><span class="mv">3</span></div>
+      </div>
     </div>
-  </div>
-
-  <div class="cierre">
-    <p><b>Lo que cambia para dirección.</b> Hoy la pregunta «¿cómo vamos?» se contesta contando el almacén y revisando una hoja. Con esto se contesta abriendo una pantalla: cuánto se vendió, por dónde entró, qué se dejó de vender por no tenerlo y qué hay que mandar a cortar la semana que viene.</p>
   </div>
 
 </div>
@@ -685,12 +674,12 @@ function resolver(){
   const tallasTxt = d===0?`${mayor} / ${mayor}`:`F:${tf} / P:${tp}`;
 
   let clase,kick,tit,sub;
-  if(d===0&&hayMayor){clase="v-ok";kick="Sale de almacén";tit=`Hay ${it.stock[mayor]} paquetes ${mayor}`;sub="Se entrega hoy mismo. No pasa por el taller.";}
+  if(d===0&&hayMayor){clase="v-ok";kick="Sale de almacén";tit=`Hay ${it.stock[mayor]} paquetes ${mayor}`;sub="Se entrega hoy mismo.";}
   else if(d===1&&hayMayor){clase="v-ok";kick="Almacén + ajuste";tit=`Se abre el paquete ${mayor}`;sub=`Quedan ${it.stock[mayor]}. El taller de confección baja ${i>j?"la filipina":"el pantalón"} de ${mayor} a ${menor}.`;}
   else if(d===0&&hayArriba){clase="v-warn";kick="Se resuelve bajando";tit=`No hay ${mayor}, pero hay ${it.stock[arriba]} en ${arriba}`;sub="Se abre un paquete de la talla de arriba y el taller baja las dos prendas.";}
-  else if(camino){clase="v-warn";kick="Viene en camino";tit=`Ya hay ${mayor} en ${camino.etapa}`;sub=`Entra al almacén el ${camino.fecha}. No hace falta volver a cortar.`;}
-  else if(d>=2){clase="v-stop";kick="No se puede ajustar";tit=`${tf} y ${tp} están a ${d} escalones`;sub="Solo se baja una talla a la vez. Este pedido se manda a cortar.";}
-  else if(d===1){clase="v-stop";kick="No hay en almacén";tit=`Sin paquetes ${mayor} en ${it.color}`;sub=`En tallas mixtas solo sirve el paquete ${mayor}: uno de ${arriba||"la talla de arriba"} dejaría la otra prenda a dos escalones. Se manda a cortar.`;}
+  else if(camino){clase="v-warn";kick="Viene en camino";tit=`Ya hay ${mayor} en ${camino.etapa}`;sub=`Entra al almacén el ${camino.fecha}.`;}
+  else if(d>=2){clase="v-stop";kick="No se puede ajustar";tit=`${tf} y ${tp} están a ${d} escalones`;sub="Este pedido se manda a cortar.";}
+  else if(d===1){clase="v-stop";kick="No hay en almacén";tit=`Sin paquetes ${mayor} en ${it.color}`;sub="Se manda a cortar.";}
   else {clase="v-stop";kick="No hay en almacén";tit=`Sin paquetes ${mayor}${arriba?` ni ${arriba}`:""} en ${it.color}`;sub="No hay de dónde bajar. Se manda a cortar.";}
   V.innerHTML=`<div class="verdict ${clase}"><div class="kicker">${kick}</div><h3>${tit}</h3><p>${sub}</p></div>`;
 
@@ -701,22 +690,22 @@ function resolver(){
     b.onclick=fn; el.appendChild(b); O.appendChild(el);
   };
   const ajustesHoy=bitacora.filter(r=>r.d==="ajuste").length;
-  const colaTaller=`<div class="flag"><b>El taller de confección es el mismo que saca los pedidos.</b> Hoy llevan ${ajustesHoy} ajuste${ajustesHoy===1?"":"s"}: cada uno le quita tiempo a un pedido con fecha.</div>`;
+  const colaTaller=`<div class="flag">Van ${ajustesHoy} ajuste${ajustesHoy===1?"":"s"} en el taller hoy.</div>`;
 
   if(d===0&&hayMayor)
     opt("pri","Inmediata",`Surtir ${q} paquete${q>1?"s":""} ${mayor}`,
-      `Quedan ${it.stock[mayor]} en ${it.color}. Sale el mismo día.`,"Surtir",
+      `Quedan ${it.stock[mayor]} en ${it.color}.`,"Surtir",
       ()=>cerrar(it,mayor,q,"directo",importe,desc,tallasTxt));
 
   if(d===1&&hayMayor)
     opt("pri","1 a 2 días",`Abrir paquete ${mayor} y bajar ${i>j?"la filipina":"el pantalón"} a ${menor}`,
-      `Se descuenta ${q} paquete ${mayor}. El cliente paga lo mismo y no se entera del ajuste.`,
+      `Se descuenta ${q} paquete ${mayor}. El cliente paga el precio normal.`,
       "Surtir con ajuste",()=>cerrar(it,mayor,q,"ajuste",importe,desc,tallasTxt),colaTaller);
 
   if(d===0&&!hayMayor&&hayArriba){
     const aviso = DEM[arriba]>=40
-      ? `<div class="flag"><b>Ojo:</b> la ${arriba} es de las tallas que más salen. Si la abres para cubrir una ${mayor}, te quedas sin la que más vendes.</div>`
-      : `<div class="flag info"><b>Conviene:</b> la ${arriba} casi no se pide sola. Es stock parado que aquí se vuelve venta.</div>`;
+      ? `<div class="flag">La ${arriba} es de las tallas que más salen. Si la abres para cubrir una ${mayor}, te quedas sin la que más vendes.</div>`
+      : `<div class="flag info">La ${arriba} casi no se pide sola.</div>`;
     opt("sec","1 a 2 días",`Bajar un paquete ${arriba} a ${mayor}`,
       `El taller ajusta las dos prendas. Quedan ${it.stock[arriba]} en ${arriba}.`,
       "Bajar de talla",()=>cerrar(it,arriba,q,"ajuste",importe,desc,tallasTxt),aviso+colaTaller);
@@ -724,25 +713,25 @@ function resolver(){
 
   if(camino&&!hayMayor)
     opt("sec","Ya está en proceso",`Apartar de la orden que está en ${camino.etapa}`,
-      `${camino.stock[mayor]} piezas ${mayor} de ${it.color} entran al almacén el ${camino.fecha}. Se aparta y no se vuelve a cortar.`,
+      `${camino.stock[mayor]} piezas ${mayor} de ${it.color} entran al almacén el ${camino.fecha}.`,
       "Apartar",()=>cerrar(it,null,q,"apartado",importe,desc,tallasTxt));
 
   opt(d===0&&hayMayor?"gho":"ter","Corte → taller de confección","Mandar a cortar",
-    "De 15 a 20 días hábiles. Se corta del mismo tendido, así el paquete sale de un solo tono.",
+    "De 15 a 20 días hábiles.",
     "Mandar a cortar",()=>cerrar(it,null,q,"corte",importe,desc,tallasTxt));
 
   const otros=CAT.filter(x=>x.linea===it.linea&&x.modelo===it.modelo&&x.color!==it.color&&x.stock[mayor]>=q);
   if(otros.length&&!(d===0&&hayMayor)){
     const el=document.createElement("div"); el.className="opt gho";
     el.innerHTML=`<div><div class="eyebrow">Inmediata · otro color</div><div class="m">Mismo modelo en ${mayor}</div>
-      <div class="d">Si el cliente es flexible con el color, sale hoy.</div>
+      <div class="d">Sale hoy.</div>
       <div class="swatches">${otros.slice(0,7).map(o=>`<span class="sw" data-c="${o.color}">${o.color} · ${o.stock[mayor]}</span>`).join("")}</div></div>`;
     O.appendChild(el);
     el.querySelectorAll(".sw").forEach(s=>s.onclick=()=>{$("color").value=s.dataset.c;resolver();});
   }
 
   opt("gho","Si no cerró","El cliente no aceptó ninguna",
-    "Queda registrado qué pidió y no se le pudo dar. Es el dato que hoy no existe en ningún lado.",
+    "Queda registrado qué pidió y no se le pudo dar.",
     "No se concretó",()=>cerrar(it,null,q,"perdida",0,desc,tallasTxt));
 
   pintaDemanda(d===0?mayor:null);
