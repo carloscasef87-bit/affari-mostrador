@@ -285,6 +285,26 @@ footer.note b{color:var(--ink-2);font-weight:600}
 .cierre{border-top:1px solid var(--ink);margin-top:34px;padding-top:20px}
 .cierre p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);max-width:78ch}
 .cierre b{color:var(--ink);font-weight:700}
+.pedido{border:1px solid var(--line)}
+.pl{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:16px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+.pl:last-child{border-bottom:none}
+.pl .pn{min-width:0}
+.pl .pn b{font-size:14.5px;font-weight:600;display:block;overflow-wrap:anywhere}
+.pl .pn span{font-size:12.5px;color:var(--ink-2);display:block;margin-top:3px}
+.pl .pq,.pl .pv{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:13.5px}
+.pl .pq{color:var(--ink-3)} .pl .pv{font-weight:500;min-width:76px;text-align:right}
+.pl .px{font:700 11px/1 "IBM Plex Sans";letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:none;border:1px solid var(--line-2);padding:7px 9px;cursor:pointer}
+.pl .px:hover{color:var(--stop);border-color:var(--stop-line)}
+.pl .via{font:700 9.5px/1 "IBM Plex Sans";letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;border:1px solid;margin-top:6px;display:inline-block}
+.via-a{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+.via-b{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)}
+.via-c{background:var(--stop-soft);color:var(--stop);border-color:var(--stop-line)}
+.pl.tot{background:var(--surface-2);border-top:1px solid var(--ink)}
+.pl.tot .pn b{font-family:"Archivo Black",Archivo,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.pl.tot .pv{font-family:"Archivo Black",Archivo,sans-serif;font-size:20px;letter-spacing:-.02em}
+.pvacio{padding:22px 16px;font-size:13.5px;color:var(--ink-3)}
+@media (max-width:620px){.pl{grid-template-columns:minmax(0,1fr) auto auto;gap:11px}.pl .pq{display:none}}
+.sectitle button.go{margin-left:8px}
 .caja,.paso,.sem,.ct,.kpi,.etapa,.st,.dia,.dm,.obs,.cifra{min-width:0}
 .opt>div:first-child,.cot-row>div:first-child,.dash-h>div:first-child{min-width:0}
 .caja li,.ct-n,.orden .nm,.paso p,.sem p,.qd{overflow-wrap:anywhere}
@@ -360,15 +380,21 @@ img{max-width:100%}
   </div>
 
   <div class="sectitle">
+    <h2>El pedido</h2>
+    <span id="pedidoCount"></span>
+    <button class="go quiet" id="btnVaciar" type="button">Vaciar</button>
+    <button class="go" id="btnCerrar" type="button">Cerrar pedido</button>
+  </div>
+  <div class="pedido" id="pedido"></div>
+
+  <div class="sectitle">
     <h2>Hoy</h2>
-    
   </div>
   <div class="stats" id="stats"></div>
   <div class="tbl-wrap">
     <table>
       <thead><tr>
-        <th>Hora</th><th>Clave</th><th>Producto</th><th>Tallas</th>
-        <th style="text-align:right">Pzas</th><th>Desenlace</th><th style="text-align:right">Importe</th>
+        <th>Hora</th><th>Folio</th><th>Pedido</th><th>Cómo se surte</th><th style="text-align:right">Importe</th>
       </tr></thead>
       <tbody id="bitacora"></tbody>
     </table>
@@ -614,10 +640,12 @@ const ORDENES=[
  {etapa:"taller",linea:"Premium",modelo:"Lusso",color:"VINO",destino:"cliente",fecha:"26 de septiembre",stock:{M:2},pedido:"Pedido de Santa Carmen"}
 ];
 const $=id=>document.getElementById(id);
+let pedido=[], folio=1043;
 let bitacora=[
- {h:"09:14",sku:"LIG-FRED-MAR-S",p:"Freddo Light · Marino",t:"S / S",q:1,d:"directo",i:649,ej:true},
- {h:"10:02",sku:"PRE-PORT-NEG-XL",p:"Porte Premium · Negro",t:"F:L / P:XL",q:1,d:"ajuste",i:980,ej:true}
+ {h:"09:14",f:"#1041",p:"1 producto · 1 pza",vias:["directo"],i:649,ej:true},
+ {h:"10:02",f:"#1042",p:"2 productos · 3 pzas",vias:["directo","ajuste"],i:2629,ej:true}
 ];
+const VIA={directo:["a","De almacén","hoy",0],ajuste:["b","Con ajuste","1 a 2 días",2],apartado:["b","Apartado","en camino",5],corte:["c","A corte","15 a 20 días hábiles",20]};
 
 function skuDe(it,t){
   const cl=(s,n)=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,n);
@@ -625,6 +653,7 @@ function skuDe(it,t){
 }
 function precioUnit(it,q,lista){
   const f=LISTAS[lista].f; let base,nivel;
+  q = q + pedido.reduce((a,l)=>a+l.q,0);
   if(lista!=="1"){ base=Math.round(it.unit*f*100)/100; nivel=LISTAS[lista].n; }
   else if(q>=12){ base=Math.round(it.unit*0.8*100)/100; nivel="mayoreo · 12 piezas o más (−20%)"; }
   else if(q>=6){ base=Math.round(it.unit*0.9*100)/100; nivel="medio mayoreo · 6 piezas (−10%)"; }
@@ -692,14 +721,14 @@ function resolver(){
   const colaTaller=`<div class="flag">Van ${ajustesHoy} ajuste${ajustesHoy===1?"":"s"} en el taller hoy.</div>`;
 
   if(d===0&&hayMayor)
-    opt("pri","Inmediata",`Surtir ${q} paquete${q>1?"s":""} ${mayor}`,
+    opt("pri","Inmediata",`Agregar ${q} paquete${q>1?"s":""} ${mayor}`,
       `Quedan ${it.stock[mayor]} en ${it.color}.`,"Surtir",
-      ()=>cerrar(it,mayor,q,"directo",importe,desc,tallasTxt));
+      ()=>agregar(it,mayor,q,"directo",desc,tallasTxt));
 
   if(d===1&&hayMayor)
     opt("pri","1 a 2 días",`Abrir paquete ${mayor} y bajar ${i>j?"la filipina":"el pantalón"} a ${menor}`,
       `Se descuenta ${q} paquete ${mayor}. El cliente paga el precio normal.`,
-      "Surtir con ajuste",()=>cerrar(it,mayor,q,"ajuste",importe,desc,tallasTxt),colaTaller);
+      "Agregar con ajuste",()=>agregar(it,mayor,q,"ajuste",desc,tallasTxt),colaTaller);
 
   if(d===0&&!hayMayor&&hayArriba){
     const aviso = DEM[arriba]>=40
@@ -707,17 +736,17 @@ function resolver(){
       : `<div class="flag info">La ${arriba} casi no se pide sola.</div>`;
     opt("sec","1 a 2 días",`Bajar un paquete ${arriba} a ${mayor}`,
       `El taller ajusta las dos prendas. Quedan ${it.stock[arriba]} en ${arriba}.`,
-      "Bajar de talla",()=>cerrar(it,arriba,q,"ajuste",importe,desc,tallasTxt),aviso+colaTaller);
+      "Bajar y agregar",()=>agregar(it,arriba,q,"ajuste",desc,tallasTxt),aviso+colaTaller);
   }
 
   if(camino&&!hayMayor)
     opt("sec","Ya está en proceso",`Apartar de la orden que está en ${camino.etapa}`,
       `${camino.stock[mayor]} piezas ${mayor} de ${it.color} entran al almacén el ${camino.fecha}.`,
-      "Apartar",()=>cerrar(it,null,q,"apartado",importe,desc,tallasTxt));
+      "Apartar y agregar",()=>agregar(it,null,q,"apartado",desc,tallasTxt));
 
   opt(d===0&&hayMayor?"gho":"ter","Corte → taller de confección","Mandar a cortar",
     "De 15 a 20 días hábiles.",
-    "Mandar a cortar",()=>cerrar(it,null,q,"corte",importe,desc,tallasTxt));
+    "Agregar y mandar a cortar",()=>agregar(it,null,q,"corte",desc,tallasTxt));
 
   const otros=CAT.filter(x=>x.linea===it.linea&&x.modelo===it.modelo&&x.color!==it.color&&x.stock[mayor]>=q);
   if(otros.length&&!(d===0&&hayMayor)){
@@ -732,29 +761,75 @@ function resolver(){
   pintaDemanda(d===0?mayor:null);
 }
 
-function cerrar(it,tallaDescontar,q,desenlace,importe,desc,tallasTxt){
+function agregar(it,tallaDescontar,q,via,desc,tallasTxt){
   if(tallaDescontar) it.stock[tallaDescontar]=Math.max(0,it.stock[tallaDescontar]-q);
-  const now=new Date(), mayor=TALLAS[Math.max(TALLAS.indexOf($("tf").value),TALLAS.indexOf($("tp").value))];
+  const mayor=TALLAS[Math.max(TALLAS.indexOf($("tf").value),TALLAS.indexOf($("tp").value))];
+  pedido.push({it,talla:tallaDescontar,q,via,desc,tallasTxt,sku:skuDe(it,tallaDescontar||mayor)});
+  llenaColor(); pintaPedido(); resolver();
+}
+function quitarLinea(i){
+  const l=pedido[i];
+  if(l.talla) l.it.stock[l.talla]+=l.q;
+  pedido.splice(i,1);
+  llenaColor(); pintaPedido(); resolver();
+}
+function vaciarPedido(){ for(let i=pedido.length-1;i>=0;i--) quitarLinea(i); }
+function pintaPedido(){
+  const P=$("pedido"), lista=$("cliente").value;
+  $("pedidoCount").textContent = pedido.length? `${pedido.length} producto${pedido.length>1?"s":""} · ${pedido.reduce((a,l)=>a+l.q,0)} pzas` : "";
+  $("btnCerrar").hidden = $("btnVaciar").hidden = !pedido.length;
+  if(!pedido.length){ P.innerHTML='<div class="pvacio">Todavía no hay productos. Captura uno a la izquierda y agrégalo desde las opciones.</div>'; return; }
+  const total=pedido.reduce((a,l)=>{
+    const pr=precioUnitLinea(l,lista); return a+pr.base*l.q; },0);
+  const pr0=precioUnitLinea(pedido[0],lista);
+  const dMax=Math.max(...pedido.map(l=>VIA[l.via][3]));
+  const entrega=Object.values(VIA).find(v=>v[3]===dMax)[2];
+  const partido=new Set(pedido.map(l=>VIA[l.via][3])).size>1;
+  P.innerHTML = pedido.map((l,i)=>{
+    const pr=precioUnitLinea(l,lista);
+    return `<div class="pl">
+      <div class="pn"><b>${l.desc}</b><span>${l.tallasTxt} · ${l.sku}</span>
+        <span class="via via-${VIA[l.via][0]}">${VIA[l.via][1]} · ${VIA[l.via][2]}</span></div>
+      <div class="pq">${l.q} × ${money(pr.base)}</div>
+      <div class="pv">${money(pr.base*l.q)}</div>
+      <button class="px" type="button" data-i="${i}">Quitar</button></div>`;
+  }).join("") + `<div class="pl tot">
+      <div class="pn"><b>Total</b><span>${pr0.nivel} · entrega ${entrega}${partido?" si se entrega completo":""}</span></div>
+      <div class="pq"></div><div class="pv">${money(total)}</div><div></div></div>`;
+  P.querySelectorAll(".px").forEach(b=>b.onclick=()=>quitarLinea(+b.dataset.i));
+}
+function precioUnitLinea(l,lista){
+  const tot=pedido.reduce((a,x)=>a+x.q,0), f=LISTAS[lista].f; let base,nivel;
+  if(lista!=="1"){ base=Math.round(l.it.unit*f*100)/100; nivel=LISTAS[lista].n; }
+  else if(tot>=12){ base=Math.round(l.it.unit*0.8*100)/100; nivel="mayoreo · 12 piezas o más (−20%)"; }
+  else if(tot>=6){ base=Math.round(l.it.unit*0.9*100)/100; nivel="medio mayoreo · 6 piezas (−10%)"; }
+  else if(tot===2&&l.it.promo2){ base=l.it.promo2; nivel="promoción 2 uniformes"; }
+  else { base=l.it.unit; nivel="precio unitario"; }
+  return {base,nivel};
+}
+function cerrarPedido(){
+  if(!pedido.length) return;
+  const lista=$("cliente").value, now=new Date();
+  const total=pedido.reduce((a,l)=>a+precioUnitLinea(l,lista).base*l.q,0);
   bitacora.unshift({h:String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0"),
-    sku:skuDe(it,tallaDescontar||mayor),p:desc,t:tallasTxt,q,d:desenlace,i:importe});
-  llenaColor(); pintaBitacora(); resolver();
+    f:"#"+(folio++), p:`${pedido.length} producto${pedido.length>1?"s":""} · ${pedido.reduce((a,l)=>a+l.q,0)} pzas`,
+    vias:[...new Set(pedido.map(l=>l.via))], i:total});
+  pedido=[]; pintaPedido(); pintaBitacora(); resolver();
 }
 
 function pintaBitacora(){
-  const T={directo:["a","Directo de almacén"],ajuste:["b","Ajuste de talla"],apartado:["b","Apartado en proceso"],corte:["c","A corte"]};
   $("bitacora").innerHTML=bitacora.map(r=>`<tr>
-    <td class="mono">${r.h}</td><td class="mono" style="font-size:11.5px">${r.sku}</td>
+    <td class="mono">${r.h}</td><td class="mono" style="font-size:12px">${r.f}</td>
     <td>${r.p}${r.ej?'<span class="ej">ejemplo</span>':""}</td>
-    <td class="mono" style="font-size:11.5px">${r.t}</td>
-    <td class="num">${r.q}</td><td><span class="tag ${T[r.d][0]}">${T[r.d][1]}</span></td>
+    <td>${r.vias.map(v=>`<span class="tag ${VIA[v][0]}">${VIA[v][1]}</span>`).join(" ")}</td>
     <td class="num">${r.i?money(r.i):"—"}</td></tr>`).join("");
-  const c=k=>bitacora.filter(r=>r.d===k).length;
+  const c=k=>bitacora.filter(r=>r.vias.includes(k)).length;
   const vendido=bitacora.reduce((a,r)=>a+r.i,0);
   $("stats").innerHTML=`
     <div class="st a"><div class="n">${money(vendido)}</div><div class="l">Vendido</div></div>
-    <div class="st b"><div class="n">${c("ajuste")}</div><div class="l">Ajustes al taller</div></div>
-    <div class="st c"><div class="n">${c("corte")}</div><div class="l">Mandados a cortar</div></div>
-    <div class="st d"><div class="n">${c("apartado")}</div><div class="l">Apartados en proceso</div></div>`;
+    <div class="st b"><div class="n">${c("ajuste")}</div><div class="l">Pedidos con ajuste</div></div>
+    <div class="st c"><div class="n">${c("corte")}</div><div class="l">Pedidos a corte</div></div>
+    <div class="st d"><div class="n">${bitacora.length}</div><div class="l">Pedidos cerrados</div></div>`;
   $("chipStock").textContent=CAT.reduce((a,x)=>a+TALLAS.reduce((b,t)=>b+x.stock[t],0),0).toLocaleString("es-MX")+" piezas";
 }
 function pintaFlujo(){
@@ -786,10 +861,12 @@ llenaLinea(); llenaModelo(); llenaColor(); llenaTallas();
 ["cliente","linea","modelo","color","tf","tp","qty"].forEach(id=>$(id).addEventListener("change",()=>{
   if(id==="linea"){llenaModelo();llenaColor();}
   if(id==="modelo"){llenaColor();}
+  if(id==="cliente"){pintaPedido();}
   resolver();
 }));
 $("qty").addEventListener("input",resolver);
-pintaBitacora(); pintaFlujo(); resolver();
+pintaPedido(); pintaBitacora(); pintaFlujo(); resolver();
+$("btnCerrar").onclick=cerrarPedido; $("btnVaciar").onclick=vaciarPedido;
 const PANES=["mostrador","dashboard","presentacion"];
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));
